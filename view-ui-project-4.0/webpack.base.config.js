@@ -1,7 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+function resolve(dir) {
+    return path.join(__dirname, dir)
+  }
 module.exports = {
     entry: {
         main: './src/main',
@@ -74,7 +76,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue'],
         alias: {
-            'vue': 'vue/dist/vue.esm.js'
+            'vue': 'vue/dist/vue.esm.js',
+            // 将项目根目录中，src的路径配置为别名@
+            '@': resolve('src'),
         }
     }
 };

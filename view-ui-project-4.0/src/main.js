@@ -5,9 +5,13 @@ import Routers from './router';
 import Util from './libs/util';
 import App from './app.vue';
 import 'view-design/dist/styles/iview.css';
+import axios from 'axios'
+import api from './api' // 导入api接口
 
+Vue.prototype.$api = api; // 将api挂载到vue的原型上复制代码
 Vue.use(VueRouter);
 Vue.use(ViewUI);
+Vue.prototype.$axios = axios
 
 // 路由配置
 const RouterConfig = {
@@ -30,5 +34,6 @@ router.afterEach((to, from, next) => {
 new Vue({
     el: '#app',
     router: router,
-    render: h => h(App)
+    render: h => h(App),
+    components: { App },
 });

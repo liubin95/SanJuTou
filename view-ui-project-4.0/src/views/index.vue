@@ -27,7 +27,6 @@
 <template>
   <div class="index">
     <Row type="flex" justify="center" align="middle">
-      <Col span="24">
         <h1>
           <img src="../images/logo.png" />
         </h1>
@@ -35,7 +34,6 @@
           <p>Welcome to your View UI app!</p>
           <Button @click="handleStart">Start View UI</Button>
         </h2>
-      </Col>
     </Row>
   </div>
 </template>
@@ -43,10 +41,7 @@
 export default {
   methods: {
     handleStart() {
-      this.$Modal.info({
-        title: "Bravo",
-        content: "Now, enjoy the convenience of View UI."
-      });
+       this.$router.push('/category/1');
     }
   }
 };
