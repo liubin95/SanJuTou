@@ -1,6 +1,8 @@
 server:
   port: 3333
 spring:
+  jackson:
+    default-property-inclusion: non_null
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -33,7 +35,7 @@ spring:
       # 超时时间 (以秒数为单位)
       remove-abandoned-timeout: 180
 mybatis-plus:
-  mapper-locations: classpath:/com/sanjutou/shopping/mapper/xml/*Mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
   type-aliases-package: com.sunjutou.shopping.entity
   configuration:
     map-underscore-to-camel-case: true

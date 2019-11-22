@@ -24,13 +24,15 @@ import java.util.List;
 public class CategoryController {
 
     /**
-     *
+     * categoryService.
      */
     @Autowired
     private CategoryService categoryService;
 
     /**
-     * @return
+     * 获取全部分类。
+     *
+     * @return 全部分类集合
      */
     @GetMapping("queryAllCategory")
     public Result<List<Category>> queryAllCategory() {
