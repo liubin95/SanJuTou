@@ -174,4 +174,14 @@ CREATE TABLE `spu`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品spu表' ROW_FORMAT = Compact;
 
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `customer-name` varchar(200) DEFAULT '' COMMENT '用户名',
+  `login-name` varchar(200) DEFAULT '' COMMENT '登陆名',
+  `password` varchar(500) DEFAULT '' COMMENT '密码',
+  `regtime` datetime DEFAULT NULL COMMENT '注册时间',
+  `openid` varchar(50) DEFAULT '' COMMENT '微信openid',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS = 1;
