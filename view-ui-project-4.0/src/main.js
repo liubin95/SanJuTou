@@ -13,6 +13,10 @@ Vue.use(VueRouter);
 Vue.use(ViewUI);
 Vue.prototype.$axios = axios
 
+Vue.prototype.$Message.config({
+    top: 100,
+    duration: 3,
+});
 // 路由配置
 const RouterConfig = {
     mode: 'history',

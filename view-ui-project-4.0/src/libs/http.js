@@ -62,13 +62,13 @@ instance.interceptors.request.use(
         token && (config.headers.token = token);
         return config;
     },
-    error => Promise.error(error))
+    error => Promise.error(error));
 
 // 响应拦截器
-instance.interceptors.response.use(
+instance.interceptors.response.use(res => {
     // 请求成功
-    res => res.status === 200 ? res : Promise.reject(res),
-
+    return res.data;
+},
     // 请求失败
     error => {
         const { response } = error;

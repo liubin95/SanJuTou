@@ -6,10 +6,14 @@ import axios from '@/libs/http'; // 导入http中创建的axios实例
 import qs from 'qs'; // 根据需求是否导入qs模块
 
 var baseUrl = `${base.dev}` + '/specification';
-console.log(baseUrl);
 
 const specification = {
-    // 新闻列表    
+    /**
+     * 分类下规格及选项
+     *
+     * @param {*} categoryId 分类id
+     * @returns
+     */
     queryCategorySpec(categoryId) {
         return axios.get(baseUrl + '/queryCategorySpec', {
             params: {
