@@ -1,6 +1,9 @@
 
 package com.sanjutou.shopping.entity.message;
 
+/**
+ * @author admin
+ */
 public class SystemMessageBuilder extends AbstractMessageBuilder {
     /**
      * 声明SystemMessageBuilder。

@@ -16,4 +16,18 @@ public interface Messages extends CommonMessages {
      */
     CodeMessage E0001 = MessageBuilder.INSTANCE.error(1, "未处理的异常");
 
+    /**
+     * 缺少必要参数。
+     */
+    CodeMessage E0002 = MessageBuilder.INSTANCE.error(2, "缺少必要参数");
+
+    /**
+     * 缺少必要参数。
+     */
+    CodeMessage E0003 = MessageBuilder.INSTANCE.error(3, "用户不存在");
+
+    /**
+     * 缺少必要参数。
+     */
+    CodeMessage E0004 = MessageBuilder.INSTANCE.error(4, "密码错误");
 }

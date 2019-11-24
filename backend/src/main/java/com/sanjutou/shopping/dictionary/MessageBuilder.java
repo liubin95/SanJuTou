@@ -4,6 +4,9 @@ package com.sanjutou.shopping.dictionary;
 
 import com.sanjutou.shopping.entity.message.AbstractMessageBuilder;
 
+/**
+ * @author admin
+ */
 public class MessageBuilder extends AbstractMessageBuilder {
     /**
      * 声明MessageBuilder。

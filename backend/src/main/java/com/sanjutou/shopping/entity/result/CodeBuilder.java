@@ -26,13 +26,14 @@ public class CodeBuilder {
 
     /**
      * 从 CODE 字符串解析对应的 CodeBuilder。
-     * 
+     *
      * @param text CODE字符串
      * @return CodeBuilder
      */
     public static CodeBuilder parse(String text) {
         CodeBuilder ret = new CodeBuilder();
-        if (text != null && text.length() >= 16) {
+        int i = 16;
+        if (text != null && text.length() >= i) {
             ret.codeType(text.substring(0, 1));
             ret.subSystemCode(text.substring(1, 4));
             ret.code(Integer.valueOf(text.substring(4, 8)));
@@ -42,10 +43,10 @@ public class CodeBuilder {
 
     /**
      * 从指定参数生成 CODE 字符串。
-     * 
-     * @param codeType codeType
+     *
+     * @param codeType      codeType
      * @param subSystemCode subSystemCode
-     * @param code code
+     * @param code          code
      * @return String CODE字符串
      */
     public static String build(String codeType, String subSystemCode, int code) {
@@ -58,11 +59,12 @@ public class CodeBuilder {
 
         // 校正 subSystemCode：调整到 3 位
         int subSystemCodeLength = subSystemCode != null ? subSystemCode.length() : 0;
-        if (subSystemCodeLength > 3) {
+        int j = 3;
+        if (subSystemCodeLength > j) {
             subSystemCode = subSystemCode.substring(0, 3);
-        } else if (subSystemCodeLength < 3) {
+        } else if (subSystemCodeLength < j) {
             StringBuilder sb = new StringBuilder();
-            for (int i = subSystemCodeLength; i < 3; i++) {
+            for (int i = subSystemCodeLength; i < j; i++) {
                 sb.append('_');
             }
             if (subSystemCode != null) {
@@ -83,7 +85,7 @@ public class CodeBuilder {
 
     /**
      * 生成对应的 Code 字符串。
-     * 
+     *
      * @return Code 字符串
      */
     public String build() {

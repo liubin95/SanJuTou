@@ -1,5 +1,8 @@
 package com.sanjutou.shopping;
 
+/**
+ * @author admin
+ */
 public class Main {
     public static void main(String[] args) {
 //        //用来获取mybatis-plus.properties文件的配置信息

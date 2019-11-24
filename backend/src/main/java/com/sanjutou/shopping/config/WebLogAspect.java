@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -42,7 +43,7 @@ public class WebLogAspect {
      * @param joinPoint joinPoint对象
      */
     @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint) {
+    public void doBefore(JoinPoint joinPoint) throws ValidatedException {
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
@@ -57,8 +58,20 @@ public class WebLogAspect {
         LOGGER.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
         // 打印请求的 IP
         LOGGER.info("IP             : {}", request.getRemoteAddr());
+        //访问目标方法的参数：
+        Object[] args = joinPoint.getArgs();
         // 打印请求入参
-        LOGGER.info("Request Args   : {}", new Gson().toJson(joinPoint.getArgs()));
+        LOGGER.info("Request Args   : {}", new Gson().toJson(args));
+
+        for (Object arg : args) {
+            // 统一参数校验
+            if ("org.springframework.validation.BeanPropertyBindingResult".equalsIgnoreCase(arg.getClass().getName())) {
+                BindingResult bindingResult = (BindingResult) arg;
+                if (bindingResult.hasErrors()) {
+                    throw new ValidatedException(String.format("%s.%s 参数异常", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName()));
+                }
+            }
+        }
     }
 
     /**

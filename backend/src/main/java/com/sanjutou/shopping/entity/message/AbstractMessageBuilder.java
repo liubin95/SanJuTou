@@ -8,6 +8,9 @@ import com.sanjutou.shopping.entity.result.CodeMessage;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author admin
+ */
 public abstract class AbstractMessageBuilder {
     /**
      * 声明CodeMessage。
@@ -18,16 +21,21 @@ public abstract class AbstractMessageBuilder {
         //
     }
 
+    /**
+     * 系统string。
+     *
+     * @return 系统string
+     */
     public abstract String getSubSystemCode();
 
     /**
      * 创建CodeMessage。
-     * 
+     *
      * @param succeeded succeeded
-     * @param codeType codeType
-     * @param code code
-     * @param format format
-     * @param args args
+     * @param codeType  codeType
+     * @param code      code
+     * @param format    format
+     * @param args      args
      * @return CodeMessage
      */
     public CodeMessage build(boolean succeeded, String codeType, int code, String format, Object... args) {
