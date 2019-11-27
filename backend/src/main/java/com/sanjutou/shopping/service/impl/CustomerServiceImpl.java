@@ -53,9 +53,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     public Result<String> customerLogin(Customer loginCustomer) {
         final Result<String> result = new Result<>();
         // 根据登陆名查询用户
-        QueryWrapper<Customer> wrapper = new QueryWrapper<>();
+        final QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name", loginCustomer.getLoginName());
-        Customer customer = customerMapper.selectOne(wrapper);
+        final Customer customer = customerMapper.selectOne(wrapper);
 
         // 判断
         if (customer == null) {
@@ -64,13 +64,13 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             result.setCodeMsg(Messages.E0004);
         } else {
             // 登陆成功
-            Map<String, Object> map = new HashMap<>(2);
+            final Map<String, Object> map = new HashMap<>(2);
             map.put("alg", "HMAC256");
             map.put("typ", "JWT");
             //设置过期时间
-            Calendar nowTime = Calendar.getInstance();
+            final Calendar nowTime = Calendar.getInstance();
             nowTime.add(Calendar.DATE, expiresTime);
-            Date expiresDate = nowTime.getTime();
+            final Date expiresDate = nowTime.getTime();
             //返回token
             final String token = JWT.create().withHeader(map).withClaim("customerId", customer.getId()).withIssuedAt(new Date()).withExpiresAt(expiresDate).sign(Algorithm.HMAC256(secret));
             result.setObj(token);

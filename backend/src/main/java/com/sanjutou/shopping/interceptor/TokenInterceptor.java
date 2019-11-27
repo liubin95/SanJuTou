@@ -13,6 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -31,7 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String secret;
 
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) {
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws IOException {
         boolean result = true;
         // 从 http 请求头中取出 token
         String token = httpServletRequest.getHeader("token");
@@ -48,6 +49,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             // 执行认证
             if (token == null) {
                 result = false;
+                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token为空");
             } else {
                 try {
                     // 验证 token
@@ -56,9 +58,11 @@ public class TokenInterceptor implements HandlerInterceptor {
                     // 判断是否过期
                     if (jwt.getExpiresAt().before(new Date())) {
                         result = false;
+                        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token过期");
                     }
                 } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
+                    result = false;
+                    httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token校验失败");
                 }
             }
         }
