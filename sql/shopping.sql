@@ -159,6 +159,16 @@ CREATE TABLE `specification_option_sku`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku-规格选项表' ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for property_option_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `property_option_sku`;
+CREATE TABLE `property_option_sku`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `option_id` int(11) NOT NULL COMMENT '属性选项主键',
+  `sku_id` int(11) NOT NULL COMMENT 'sku主键',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku-属性选项表' ROW_FORMAT = Compact;
+-- ----------------------------
 -- Table structure for spu
 -- ----------------------------
 DROP TABLE IF EXISTS `spu`;
