@@ -1,9 +1,10 @@
 package com.sanjutou.shopping.controller;
 
 
+import com.sanjutou.shopping.service.SkuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,9 +14,16 @@ import org.springframework.stereotype.Controller;
  * @author liubin
  * @since 2019-11-20
  */
-@Controller
+@RestController
 @RequestMapping("/sku")
 public class SkuController {
+
+    /**
+     *
+     */
+    @Autowired
+    private SkuService skuService;
+
 
 }
 

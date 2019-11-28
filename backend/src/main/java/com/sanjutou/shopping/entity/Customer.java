@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,13 +35,14 @@ public class Customer extends Model<Customer> {
     /**
      * 登陆名
      */
-    @NotNull(groups = {Login.class})
+    @NotBlank(groups = {Login.class})
+    @Email
     private String loginName;
 
     /**
      * 密码
      */
-    @NotNull(groups = {Login.class})
+    @NotBlank(groups = {Login.class})
     private String password;
 
     /**

@@ -34,6 +34,7 @@ public class CategoryController {
     /**
      * 获取全部分类。
      *
+     * @param token token
      * @return 全部分类集合
      */
     @GetMapping("queryAllCategory")

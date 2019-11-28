@@ -20,6 +20,11 @@ public class SpecificationVO extends Specification implements Serializable {
      */
     private List<SpecificationOption> options;
 
+    /**
+     * 规格对应的选项id列表.
+     */
+    private List<Integer> optionIds;
+
     public List<SpecificationOption> getOptions() {
         return options;
     }
@@ -28,10 +33,19 @@ public class SpecificationVO extends Specification implements Serializable {
         this.options = options;
     }
 
+    public List<Integer> getOptionIds() {
+        return optionIds;
+    }
+
+    public void setOptionIds(List<Integer> optionIds) {
+        this.optionIds = optionIds;
+    }
+
     @Override
     public String toString() {
         return "SpecificationVO{" +
                 "options=" + options +
+                ", optionIds=" + optionIds +
                 '}';
     }
 }

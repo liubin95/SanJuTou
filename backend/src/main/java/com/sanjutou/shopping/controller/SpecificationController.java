@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +48,7 @@ public class SpecificationController {
      */
     @GetMapping("queryCategorySpec")
     @PassToken
-    public Result<List<SpecificationVO>> queryCategorySpec(Integer categoryId) throws InterruptedException {
+    public Result<List<SpecificationVO>> queryCategorySpec(@NotNull Integer categoryId) throws InterruptedException {
         Result<List<SpecificationVO>> result = new Result<>();
         result.setObj(specificationService.queryCategorySpec(categoryId));
         TimeUnit.SECONDS.sleep(2);

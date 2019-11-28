@@ -1,5 +1,6 @@
 package com.sanjutou.shopping.config;
 
+import com.sanjutou.shopping.interceptor.OptionsInterceptor;
 import com.sanjutou.shopping.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,12 @@ public class SpringWebConfig implements WebMvcConfigurer {
     private TokenInterceptor tokenInterceptor;
 
     /**
+     * options请求拦截器。
+     */
+    @Autowired
+    private OptionsInterceptor optionsInterceptor;
+
+    /**
      * 全局跨域。
      *
      * @param registry registry
@@ -42,6 +49,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 对所有的URL配置
+        registry.addInterceptor(optionsInterceptor).addPathPatterns("/**");
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
     }
 }
