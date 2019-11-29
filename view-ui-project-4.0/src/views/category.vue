@@ -10,19 +10,24 @@
     float: left;
   }
   .specifications-name {
-    margin-right: 10px;
-    margin-top: 10px;
-    float: left;
+    width: 10%;
     font-size: 16px;
     line-height: 16px;
   }
   .specifications-options {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    float: left;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
   }
   .specifications-row {
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
   }
   img {
     height: 220px;
@@ -31,6 +36,15 @@
   .priceSpan {
     color: red;
   }
+  .skuList {
+    width: 100%;
+    float: left;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 </style>
 <template>
@@ -38,7 +52,7 @@
     <!-- 筛选部分 -->
     <div class="screen">
       <Row v-for="item in specifications" :key="item.id" class="specifications-row">
-        <span class="specifications-name">{{item.specificationName}}</span>
+        <div class="specifications-name">{{item.specificationName}}</div>
         <CheckboxGroup
           class="specifications-options"
           v-model="requirements[item.id]"
@@ -55,15 +69,15 @@
       </Row>
     </div>
     <div class="skuList">
-      <Col span="6">
+      <div v-for="spu in spuList" :key="spu.id">
         <Card>
           <div style="text-align:center">
-            <img src="../images/01.png" />
-            <p slot="title">华为 HUAWEI Mate 30 Pro 麒麟990旗舰芯片OLED环幕屏双4000万徕卡电影四摄8GB+128GB星河银4G全网通手机</p>
+            <img :src="spu.cover" />
+            <p slot="title">{{spu.proName}}</p>
             <Icon type="logo-yen" color="red" size="18" />
-            <span class="priceSpan">57.00</span>
-            <h4 style="color:gray">华为京东自营官方旗舰店</h4>
-            <Rate disabled v-model="valueDisabled" />
+            <span class="priceSpan">{{spu.price}}</span>
+            <h4 style="color:gray">{{spu.info}}</h4>
+            <Rate disabled v-model="spu.rate" />
             <div>
               <Tag color="primary">放心购</Tag>
               <Tag color="success">新品</Tag>
@@ -71,7 +85,7 @@
             </div>
           </div>
         </Card>
-      </Col>
+      </div>
     </div>
   </div>
 </template>
@@ -83,12 +97,33 @@ export default {
       id: this.$route.params.id,
       specifications: [],
       requirements: {},
-      valueDisabled: 4
+      spuList: []
     };
   },
   methods: {
+    // 筛选框的变化
     change(data) {
       console.log(this.requirements);
+      let array = new Array();
+      let requirements = this.requirements;
+      let isAllEmpty = true;
+      for (const key in requirements) {
+        const element = requirements[key];
+        let sonArray = new Array();
+        if (element.length !== 0) {
+          isAllEmpty = false;
+        }
+        element.forEach(item => {
+          sonArray.push(item);
+        });
+        array.push(sonArray);
+      }
+      console.log(JSON.stringify(array));
+      if (isAllEmpty) {
+        this.querySpuByCategoryId();
+      } else {
+        this.querySpuBySpecOptions(array);
+      }
     },
     //  分类下规格及选项
     queryCategorySpec() {
@@ -107,10 +142,47 @@ export default {
           this.$Message.error("请求失败");
           this.$Spin.hide();
         });
+    },
+    //根据规格获取spu
+    querySpuBySpecOptions(array) {
+      this.$Spin.show();
+      this.$api.spu
+        .querySpuBySpecOptions(array)
+        .then(data => {
+          if (data.succeeded) {
+            this.spuList = data.obj;
+          } else {
+            this.$Message.error({ content: data.msg, background: true });
+          }
+          this.$Spin.hide();
+        })
+        .catch(error => {
+          this.$Message.error("请求失败");
+          this.$Spin.hide();
+        });
+    },
+    //根据分类获取spu
+    querySpuByCategoryId() {
+      this.$Spin.show();
+      this.$api.spu
+        .querySpuByCategoryId(this.id)
+        .then(data => {
+          if (data.succeeded) {
+            this.spuList = data.obj;
+          } else {
+            this.$Message.error({ content: data.msg, background: true });
+          }
+          this.$Spin.hide();
+        })
+        .catch(error => {
+          this.$Message.error("请求失败");
+          this.$Spin.hide();
+        });
     }
   },
   created() {
     this.queryCategorySpec();
+    this.querySpuByCategoryId();
   }
 };
 </script>

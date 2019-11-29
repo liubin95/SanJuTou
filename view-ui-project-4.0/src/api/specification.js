@@ -11,7 +11,7 @@ const specification = {
     /**
      * 分类下规格及选项
      *
-     * @param {*} categoryId 分类id
+     * @param {String} categoryId 分类id
      * @returns
      */
     queryCategorySpec(categoryId) {

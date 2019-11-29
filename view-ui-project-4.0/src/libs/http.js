@@ -21,7 +21,7 @@ const toLogin = () => {
  * 请求失败后的错误统一处理 
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status, other) => {
+const errorHandle = (status) => {
     // 状态码判断
     switch (status) {
         // 401: 未登录状态，跳转登录页
@@ -39,7 +39,7 @@ const errorHandle = (status, other) => {
             console.log(404);
             break;
         default:
-            console.log(other);
+            console.log("请求失败");
     }
 }
 
@@ -71,10 +71,9 @@ instance.interceptors.response.use(res => {
 },
     // 请求失败
     error => {
-        const { response } = error;
         // 请求已发出，但是不在2xx的范围 
-        errorHandle(response.status, response.data.message);
-        return Promise.resolve(response);
+        errorHandle(error.status);
+        return Promise.resolve(error);
 
     }
 );
