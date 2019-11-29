@@ -1,7 +1,10 @@
 package com.sanjutou.shopping.service;
 
-import com.sanjutou.shopping.entity.Spu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.Spu;
+import com.sanjutou.shopping.entity.vo.SpuVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,21 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-11-20
  */
 public interface SpuService extends IService<Spu> {
+
+    /**
+     * 根据规格id集合，返回商品集合。
+     *
+     * @param ids id集合
+     * @return 商品集合
+     */
+    List<SpuVO> querySpuBySpecOptions(Integer[][] ids);
+
+    /**
+     * 根据分类id查询spu集合。
+     *
+     * @param id 分类id
+     * @return spu集合
+     */
+    List<SpuVO> querySpuByCategoryId(Integer id);
 
 }

@@ -6,9 +6,8 @@ import com.sanjutou.shopping.entity.result.CodeMessage;
 
 /**
  * 通用的 Code Message 设置。
- * 
- * @author 夏阳
  *
+ * @author liubin
  */
 public interface CommonMessages extends CommonHttpStatusMessages {
     /**

@@ -2,12 +2,9 @@ package com.sanjutou.shopping.controller;
 
 
 import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.config.WebLogAspect;
 import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.entity.vo.SpecificationVO;
 import com.sanjutou.shopping.service.SpecificationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -29,10 +25,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/specification")
 public class SpecificationController {
 
-    /**
-     * LOGGER.
-     */
-    private final static Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
     /**
      * specificationService.
@@ -48,10 +40,9 @@ public class SpecificationController {
      */
     @GetMapping("queryCategorySpec")
     @PassToken
-    public Result<List<SpecificationVO>> queryCategorySpec(@NotNull Integer categoryId) throws InterruptedException {
+    public Result<List<SpecificationVO>> queryCategorySpec(@NotNull Integer categoryId) {
         Result<List<SpecificationVO>> result = new Result<>();
         result.setObj(specificationService.queryCategorySpec(categoryId));
-        TimeUnit.SECONDS.sleep(2);
         return result;
     }
 }

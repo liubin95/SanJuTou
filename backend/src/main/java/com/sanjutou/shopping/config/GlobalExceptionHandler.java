@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * 全局异常捕获。
  *
- * @author admin
+ * @author liubin
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,7 +21,21 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * 参数校验失败异常。
+     * 单个参数校验异常。
+     *
+     * @param exception ConstraintViolationException
+     * @return re
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Result<Object> handleConstraintViolationException(ConstraintViolationException exception) {
+        final Result<Object> result = new Result<>();
+        LOGGER.error("参数校验失败：{}", exception);
+        result.setCodeMsg(Messages.E0002);
+        return result;
+    }
+
+    /**
+     * 实体参数校验失败异常。
      *
      * @param exception ValidatedException
      * @return re

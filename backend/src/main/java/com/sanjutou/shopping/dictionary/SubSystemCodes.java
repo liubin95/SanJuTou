@@ -11,6 +11,6 @@ public interface SubSystemCodes extends CommonSubSystemCodes {
     /**
      * 工单系统后台。
      */
-    String BIZ_GONGDAN = "BGD";
+    String SANJUTOU = "SJT";
 
 }

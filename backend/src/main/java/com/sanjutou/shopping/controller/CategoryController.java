@@ -6,11 +6,13 @@ import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.service.CategoryService;
 import com.sanjutou.shopping.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/category")
+@Validated
 public class CategoryController {
 
     /**
@@ -38,9 +41,8 @@ public class CategoryController {
      * @return 全部分类集合
      */
     @GetMapping("queryAllCategory")
-    public Result<List<Category>> queryAllCategory(@RequestHeader("token") String token) {
+    public Result<List<Category>> queryAllCategory(@NotBlank @RequestHeader("token") String token) {
         int i = JwtUtil.getCustomerIdFromToken(token);
-        System.out.println(i);
         final Result<List<Category>> result = new Result<>();
         result.setObj(categoryService.list());
         return result;

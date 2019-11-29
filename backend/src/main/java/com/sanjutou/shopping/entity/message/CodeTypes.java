@@ -3,8 +3,8 @@ package com.sanjutou.shopping.entity.message;
 
 /**
  * 消息类型定义。
- * 
- * @author 夏阳
+ *
+ * @author liubin
  */
 public interface CodeTypes {
     /**

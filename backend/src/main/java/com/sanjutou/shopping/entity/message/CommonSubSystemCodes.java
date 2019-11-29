@@ -3,8 +3,8 @@ package com.sanjutou.shopping.entity.message;
 
 /**
  * 系统类型定义。
- * 
- * @author 夏阳
+ *
+ * @author liubin
  */
 public interface CommonSubSystemCodes {
     /**
@@ -12,13 +12,9 @@ public interface CommonSubSystemCodes {
      */
     String SYSTEM = "SYS";
 
-    /**
-     * 系统预留。
-     */
-    String APPLICATION = "APP";
 
     /**
      * 系统预留。
      */
-    String COMMON = "COM";
+    String COMMON = "SJU";
 }

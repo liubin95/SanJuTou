@@ -6,9 +6,8 @@ import com.sanjutou.shopping.entity.result.CodeMessage;
 
 /**
  * 通用的 HTTP 请求错误定义。
- * 
- * @author 夏阳
  *
+ * @author liubin
  */
 public interface CommonHttpStatusMessages {
     /**
@@ -18,7 +17,7 @@ public interface CommonHttpStatusMessages {
 
     /**
      * 通过 HTTP 状态码得到对应的错误定义。
-     * 
+     *
      * @param httpStatusCode httpStatusCode
      * @return CodeMessage
      */

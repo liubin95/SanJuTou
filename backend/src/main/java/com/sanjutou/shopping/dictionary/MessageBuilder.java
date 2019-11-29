@@ -5,7 +5,7 @@ package com.sanjutou.shopping.dictionary;
 import com.sanjutou.shopping.entity.message.AbstractMessageBuilder;
 
 /**
- * @author admin
+ * @author liubin
  */
 public class MessageBuilder extends AbstractMessageBuilder {
     /**
@@ -19,6 +19,6 @@ public class MessageBuilder extends AbstractMessageBuilder {
 
     @Override
     public String getSubSystemCode() {
-        return SubSystemCodes.BIZ_GONGDAN;
+        return SubSystemCodes.SANJUTOU;
     }
 }

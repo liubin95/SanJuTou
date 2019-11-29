@@ -3,6 +3,7 @@ package com.sanjutou.shopping.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +16,7 @@ import java.io.Serializable;
  */
 public class Spu extends Model<Spu> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -58,6 +59,10 @@ private static final long serialVersionUID=1L;
      */
     private String note;
 
+    /**
+     * 星级。
+     */
+    private Integer rate;
 
     public Integer getId() {
         return id;
@@ -131,14 +136,22 @@ private static final long serialVersionUID=1L;
     @Override
     public String toString() {
         return "Spu{" +
-        "id=" + id +
-        ", proName=" + proName +
-        ", cateId=" + cateId +
-        ", storeId=" + storeId +
-        ", status=" + status +
-        ", cover=" + cover +
-        ", info=" + info +
-        ", note=" + note +
-        "}";
+                "id=" + id +
+                ", proName=" + proName +
+                ", cateId=" + cateId +
+                ", storeId=" + storeId +
+                ", status=" + status +
+                ", cover=" + cover +
+                ", info=" + info +
+                ", note=" + note +
+                "}";
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 }

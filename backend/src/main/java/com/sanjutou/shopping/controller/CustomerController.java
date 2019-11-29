@@ -5,8 +5,6 @@ import com.sanjutou.shopping.config.ValidatedException;
 import com.sanjutou.shopping.entity.Customer;
 import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.service.CustomerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,10 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    /**
-     *
-     */
-    private final static Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
+
 
     /**
      * customerService

@@ -7,6 +7,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * OPTIONS 请求拦截器
@@ -19,7 +21,11 @@ public class OptionsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 此处配置的是允许任意域名跨域请求，可根据需求指定
-        response.setHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
+        String origin = request.getHeader("origin");
+        if (origin != null) {
+            String rqHeader = URLEncoder.encode(origin, StandardCharsets.UTF_8.displayName());
+            response.setHeader("Access-Control-Allow-Origin", rqHeader);
+        }
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "86400");
