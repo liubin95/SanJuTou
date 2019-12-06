@@ -60,7 +60,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
         // 判断
         if (customer == null) {
             result.setCodeMsg(Messages.E0003);
-        } else if (!DigestUtils.md5Hex(loginCustomer.getPassword()).toUpperCase().equals(customer.getPassword())) {
+        } else if (!DigestUtils.md5Hex(loginCustomer.getPassword()).equalsIgnoreCase(customer.getPassword())) {
             result.setCodeMsg(Messages.E0004);
         } else {
             // 登陆成功

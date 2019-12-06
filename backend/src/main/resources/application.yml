@@ -7,13 +7,11 @@ spring:
     name: shopping
   mvc:
     dispatch-options-request: true
-  jackson:
-    default-property-inclusion: NON_EMPTY
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
-    url: jdbc:mysql://127.0.0.1:3306/shopping?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/shopping?characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # 初始化时建立物理连接的个数。初始化发生在显示调用 init 方法，或者第一次 getConnection 时

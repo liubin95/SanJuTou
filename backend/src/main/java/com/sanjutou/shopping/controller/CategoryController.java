@@ -1,10 +1,10 @@
 package com.sanjutou.shopping.controller;
 
 
+import com.sanjutou.shopping.config.PassToken;
 import com.sanjutou.shopping.entity.Category;
 import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.service.CategoryService;
-import com.sanjutou.shopping.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +37,23 @@ public class CategoryController {
     /**
      * 获取全部分类。
      *
-     * @param token token
      * @return 全部分类集合
      */
     @GetMapping("queryAllCategory")
-    public Result<List<Category>> queryAllCategory(@NotBlank @RequestHeader("token") String token) {
-        int i = JwtUtil.getCustomerIdFromToken(token);
+    @PassToken
+    public Result<List<Category>> queryAllCategory() {
+        final Result<List<Category>> result = new Result<>();
+        result.setObj(categoryService.list());
+        return result;
+    }
+
+    /**
+     * 用户id】获取demo
+     *
+     * @param token
+     * @return
+     */
+    public Result<List<Category>> demo(@NotBlank @RequestHeader("token") String token) {
         final Result<List<Category>> result = new Result<>();
         result.setObj(categoryService.list());
         return result;

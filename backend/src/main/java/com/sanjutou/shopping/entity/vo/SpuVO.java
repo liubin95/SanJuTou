@@ -2,6 +2,7 @@ package com.sanjutou.shopping.entity.vo;
 
 import com.sanjutou.shopping.entity.Spu;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -9,7 +10,9 @@ import java.math.BigDecimal;
  *
  * @author liubin
  */
-public class SpuVO extends Spu {
+public class SpuVO extends Spu implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 展示价格。

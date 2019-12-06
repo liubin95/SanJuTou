@@ -2,10 +2,13 @@ package com.sanjutou.shopping.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sanjutou.shopping.entity.FlashSale;
+import com.sanjutou.shopping.entity.FlashSaleSku;
 import com.sanjutou.shopping.entity.Sku;
 import com.sanjutou.shopping.entity.SpecificationOptionSku;
 import com.sanjutou.shopping.entity.Spu;
 import com.sanjutou.shopping.entity.vo.SpuVO;
+import com.sanjutou.shopping.mapper.FlashSaleSkuMapper;
 import com.sanjutou.shopping.mapper.SkuMapper;
 import com.sanjutou.shopping.mapper.SpecificationOptionSkuMapper;
 import com.sanjutou.shopping.mapper.SpuMapper;
@@ -49,10 +52,16 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     private SkuMapper skuMapper;
 
     /**
-     * specificationOptionSkuMapper.
+     * 规格选项的mapper.
      */
     @Autowired
     private SpecificationOptionSkuMapper specificationOptionSkuMapper;
+
+    /**
+     * 秒杀mapper
+     */
+    @Autowired
+    private FlashSaleSkuMapper flashSaleSkuMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -63,11 +72,14 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         Arrays.stream(ids).forEach(integers -> {
             if (integers.length != 0) {
                 final QueryWrapper<SpecificationOptionSku> wrapper = new QueryWrapper<>();
-                wrapper.in("option_id", integers);
+                wrapper.in("option_id", Arrays.asList(integers));
                 //获取到全部OptionSku
                 final List<SpecificationOptionSku> optionSkuList = specificationOptionSkuMapper.selectList(wrapper);
                 // 获取skuID 去重
-                final List<Integer> skuIds = optionSkuList.stream().map(SpecificationOptionSku::getSkuId).distinct().collect(Collectors.toList());
+                final List<Integer> skuIds = optionSkuList.stream()
+                        .map(SpecificationOptionSku::getSkuId)
+                        .distinct()
+                        .collect(Collectors.toList());
                 beforeList.add(skuIds);
             }
         });
@@ -83,7 +95,8 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         } else {
             // 获取全部sku
             final List<Sku> skuList = skuMapper.selectBatchIds(afterList);
-            final Map<Integer, BigDecimal> idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o2));
+            final Map<Integer, BigDecimal> idSkuMap = skuList.stream()
+                    .collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o2));
             // 获取全部spu
             final List<Spu> spuList = spuMapper.selectBatchIds(idSkuMap.keySet());
             result = voAddPrice(spuList, skuList);
@@ -98,25 +111,39 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         final QueryWrapper<Spu> queryWrapper = new QueryWrapper<>();
         queryWrapper.and(q -> q.eq("cate_id", id).eq("status", 1));
         final List<Spu> spuList = spuMapper.selectList(queryWrapper);
-        // spuID 集合
-        final List<Integer> spuIdList = spuList.stream().map(Spu::getId).collect(Collectors.toList());
-        final QueryWrapper<Sku> skuQueryWrapper = new QueryWrapper<>();
-        skuQueryWrapper.in("spu_id", spuIdList);
-        // 获取sku
-        final List<Sku> skuList = skuMapper.selectList(skuQueryWrapper);
         // 增加价格属性
-        return voAddPrice(spuList, skuList);
+        return voAddPrice(spuList, null);
+    }
+
+    @Override
+    public List<SpuVO> querySpuListByFlashSale(FlashSale flashSale) {
+        final QueryWrapper<FlashSaleSku> wrapper = new QueryWrapper<>();
+        wrapper.eq("flash_id", flashSale.getId());
+        final List<FlashSaleSku> list = flashSaleSkuMapper.selectList(wrapper);
+        final List<Integer> spuIdList = list.stream().map(FlashSaleSku::getSpuId).collect(Collectors.toList());
+        final List<Spu> spuList = spuMapper.selectBatchIds(spuIdList);
+        return voAddPrice(spuList, null);
     }
 
     /**
      * 把sku的价格 增加对应的SpuVO
      *
      * @param spuList spuList
-     * @param skuList skuList
+     * @param skuList skuList 为空时，对价格不敏感，首页展示用
      * @return spuVO 集合
      */
     private List<SpuVO> voAddPrice(List<Spu> spuList, List<Sku> skuList) {
-        final Map<Integer, BigDecimal> idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o2));
+        if (CollectionUtils.isEmpty(skuList)) {
+            // spuID 集合
+            final List<Integer> spuIdList = spuList.stream()
+                    .map(Spu::getId)
+                    .collect(Collectors.toList());
+            final QueryWrapper<Sku> skuQueryWrapper = new QueryWrapper<>();
+            skuQueryWrapper.in("spu_id", spuIdList);
+            // 获取sku
+            skuList = skuMapper.selectList(skuQueryWrapper);
+        }
+        final Map<Integer, BigDecimal> idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o1.compareTo(o2) > 0 ? o1 : o2));
         //整合数据
         return spuList.stream().map(vo -> {
             final SpuVO temp = new SpuVO();

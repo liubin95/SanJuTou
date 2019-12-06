@@ -1,6 +1,7 @@
 package com.sanjutou.shopping.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.FlashSale;
 import com.sanjutou.shopping.entity.Spu;
 import com.sanjutou.shopping.entity.vo.SpuVO;
 
@@ -31,5 +32,13 @@ public interface SpuService extends IService<Spu> {
      * @return spu集合
      */
     List<SpuVO> querySpuByCategoryId(Integer id);
+
+    /**
+     * 根据秒杀id查询参与的商品。
+     *
+     * @param flashSale 秒杀对象
+     * @return 集合
+     */
+    List<SpuVO> querySpuListByFlashSale(FlashSale flashSale);
 
 }

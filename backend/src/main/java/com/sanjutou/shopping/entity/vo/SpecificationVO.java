@@ -46,6 +46,6 @@ public class SpecificationVO extends Specification implements Serializable {
         return "SpecificationVO{" +
                 "options=" + options +
                 ", optionIds=" + optionIds +
-                '}';
+                "} " + super.toString();
     }
 }
