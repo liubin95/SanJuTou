@@ -68,8 +68,9 @@
         <Divider />
       </Row>
     </div>
+    <!-- 商品列表 -->
     <div class="skuList">
-      <div v-for="spu in spuList" :key="spu.id">
+      <div v-for="spu in spuList" :key="spu.id" @click="clikGood(spu.id)">
         <Card>
           <div style="text-align:center">
             <img :src="spu.cover" />
@@ -178,6 +179,10 @@ export default {
           this.$Message.error("请求失败");
           this.$Spin.hide();
         });
+    },
+    //跳转商品详情页
+    clikGood(id) {
+      this.$router.push("/goods/" + id);
     }
   },
   created() {

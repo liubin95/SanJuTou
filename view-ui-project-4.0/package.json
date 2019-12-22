@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.0",
+    "v-region": "^2.2.2",
     "view-design": "^4.0.2",
     "vue": "^2.5.16",
     "vue-router": "^2.8.1",

@@ -2,7 +2,7 @@ const routers = [
     {
         path: '/',
         meta: {
-            title: ''
+            title: '三巨头商城'
         },
         component: (resolve) => require(['./views/index.vue'], resolve)
     },
@@ -16,9 +16,16 @@ const routers = [
     {
         path: '/category/:id',
         meta: {
-            title: ''
+            title: '分类首页'
         },
         component: (resolve) => require(['@/views/category'], resolve)
+    },
+    {
+        path: '/goods/:id',
+        meta: {
+            title: '商品详情'
+        },
+        component: (resolve) => require(['@/views/goods'], resolve)
     }
 ];
 export default routers;

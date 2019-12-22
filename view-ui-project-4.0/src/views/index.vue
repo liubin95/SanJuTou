@@ -223,7 +223,7 @@ export default {
         })
         .catch(error => {
           this.$Message.error("请求失败");
-          console.log(error);
+          console.error(error);
           this.$Spin.hide();
         });
     },

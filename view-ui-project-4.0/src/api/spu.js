@@ -29,6 +29,18 @@ const spu = {
      */
     querySpuBySpecOptions(params) {
         return axios.post(baseUrl + '/querySpuBySpecOptions', params, { headers: { 'Content-Type': 'application/json' } });
+    },
+    /**
+     *根据商品id获取详情
+     *
+     * @param {number} spuId 商品id
+     */
+    querySpuById(spuId){
+        return axios.get(baseUrl +'/querySpuById',{
+            params:{
+                spuId:spuId
+            }
+        })
     }
 }
 export default spu;

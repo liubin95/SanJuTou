@@ -8,7 +8,7 @@ import 'view-design/dist/styles/iview.css';
 import axios from 'axios'
 import api from './api' // 导入api接口
 
-Vue.prototype.$api = api; // 将api挂载到vue的原型上复制代码
+Vue.prototype.$api = api; // 将api挂载到vue的原型上
 Vue.use(VueRouter);
 Vue.use(ViewUI);
 Vue.prototype.$axios = axios

@@ -2,7 +2,7 @@ let util = {
 
 };
 util.title = function (title) {
-    title = title ? title + ' - Home' : 'SanJuTou';
+    title = title ? title + ' - SanJuTou' : 'SanJuTou';
     window.document.title = title;
 };
 
