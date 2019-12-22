@@ -2,6 +2,7 @@ package com.sanjutou.shopping.controller;
 
 
 import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.Spu;
 import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.entity.vo.SpuVO;
 import com.sanjutou.shopping.service.SpuService;
@@ -61,6 +62,21 @@ public class SpuController {
     public Result<List<SpuVO>> querySpuByCategoryId(@NotNull Integer categoryId) {
         final Result<List<SpuVO>> result = new Result<>();
         result.setObj(spuService.querySpuByCategoryId(categoryId));
+        return result;
+    }
+
+    /**
+     * 根据商品id，获取详情
+     *
+     * @param spuId 商品id
+     * @return sku 集合
+     */
+    @GetMapping("querySpuById")
+    @PassToken
+    public Result<Spu> querySpuById(@NotNull Integer spuId) {
+        final Result<Spu> result = new Result<>();
+        final Spu spu = spuService.getById(spuId);
+        result.setObj(spu);
         return result;
     }
 }

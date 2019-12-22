@@ -1,10 +1,11 @@
 package com.sanjutou.shopping.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -16,7 +17,7 @@ import java.io.Serializable;
  */
 public class Sku extends Model<Sku> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -53,6 +54,11 @@ private static final long serialVersionUID=1L;
      * spu主键
      */
     private Integer spuId;
+
+    /**
+     * 描述
+     */
+    private String info;
 
 
     public Integer getId() {
@@ -119,13 +125,21 @@ private static final long serialVersionUID=1L;
     @Override
     public String toString() {
         return "Sku{" +
-        "id=" + id +
-        ", oldPrice=" + oldPrice +
-        ", newPrice=" + newPrice +
-        ", stock=" + stock +
-        ", cover=" + cover +
-        ", sales=" + sales +
-        ", spuId=" + spuId +
-        "}";
+                "id=" + id +
+                ", oldPrice=" + oldPrice +
+                ", newPrice=" + newPrice +
+                ", stock=" + stock +
+                ", cover=" + cover +
+                ", sales=" + sales +
+                ", spuId=" + spuId +
+                "}";
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

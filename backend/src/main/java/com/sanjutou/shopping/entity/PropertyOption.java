@@ -1,8 +1,10 @@
 package com.sanjutou.shopping.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +17,7 @@ import java.io.Serializable;
  */
 public class PropertyOption extends Model<PropertyOption> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -29,8 +31,15 @@ private static final long serialVersionUID=1L;
     private Integer propertyId;
 
     /**
-     * 选项值
+     * spuId
      */
+    private Integer spuId;
+
+    /**
+     * 选项值
+     * option是关键字，需要特殊处理
+     */
+    @TableField("`option`")
     private String option;
 
 
@@ -66,9 +75,17 @@ private static final long serialVersionUID=1L;
     @Override
     public String toString() {
         return "PropertyOption{" +
-        "id=" + id +
-        ", propertyId=" + propertyId +
-        ", option=" + option +
-        "}";
+                "id=" + id +
+                ", propertyId=" + propertyId +
+                ", option=" + option +
+                "}";
+    }
+
+    public Integer getSpuId() {
+        return spuId;
+    }
+
+    public void setSpuId(Integer spuId) {
+        this.spuId = spuId;
     }
 }

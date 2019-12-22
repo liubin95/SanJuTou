@@ -3,6 +3,7 @@ package com.sanjutou.shopping.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +16,7 @@ import java.io.Serializable;
  */
 public class Property extends Model<Property> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -66,9 +67,9 @@ private static final long serialVersionUID=1L;
     @Override
     public String toString() {
         return "Property{" +
-        "id=" + id +
-        ", cateId=" + cateId +
-        ", propertyName=" + propertyName +
-        "}";
+                "id=" + id +
+                ", cateId=" + cateId +
+                ", propertyName=" + propertyName +
+                "}";
     }
 }

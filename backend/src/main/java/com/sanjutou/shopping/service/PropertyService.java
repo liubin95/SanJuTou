@@ -1,7 +1,10 @@
 package com.sanjutou.shopping.service;
 
-import com.sanjutou.shopping.entity.Property;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.Property;
+import com.sanjutou.shopping.entity.vo.PropertyVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PropertyService extends IService<Property> {
 
+    /**
+     * 根据spu查询属性列表
+     *
+     * @param spuId spuId
+     * @return 属性VO集合
+     */
+    List<PropertyVO> queryPropertyBySpu(Integer spuId);
 }

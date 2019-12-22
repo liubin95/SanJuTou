@@ -1,7 +1,10 @@
 package com.sanjutou.shopping.service;
 
-import com.sanjutou.shopping.entity.Sku;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.Sku;
+import com.sanjutou.shopping.entity.vo.QuerySkuVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SkuService extends IService<Sku> {
 
+    /**
+     * 根据选项集合查询sku
+     *
+     * @param list ids
+     * @return
+     */
+    Sku querySkuByPropertyOptions(List<QuerySkuVO> list);
 }
