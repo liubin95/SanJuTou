@@ -11,7 +11,7 @@
  Target Server Version : 50641
  File Encoding         : 65001
 
- Date: 22/12/2019 20:01:48
+ Date: 29/12/2019 14:23:53
 */
 
 SET NAMES utf8mb4;
@@ -24,15 +24,16 @@ DROP TABLE IF EXISTS `address_info`;
 CREATE TABLE `address_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `customer_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户id',
-  `address` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '详细地址信息',
+  `address` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址信息',
   `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '电话',
   `is_default` smallint(2) NOT NULL DEFAULT 0 COMMENT '是否默认地址。0代表不是，1代表是',
-  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '收件人姓名',
-  `province` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省级',
-  `city` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市级',
-  `county` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区级',
+  `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '收件人姓名',
+  `province` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省级',
+  `city` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市级',
+  `area` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区级',
+  `town` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '镇级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址信息表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址信息表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for category
@@ -69,7 +70,7 @@ CREATE TABLE `customer`  (
   `reg_time` datetime(0) NULL DEFAULT NULL COMMENT '注册时间',
   `open_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '微信openid',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for flash_sale
