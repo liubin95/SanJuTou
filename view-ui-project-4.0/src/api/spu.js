@@ -35,10 +35,23 @@ const spu = {
      *
      * @param {number} spuId 商品id
      */
-    querySpuById(spuId){
-        return axios.get(baseUrl +'/querySpuById',{
-            params:{
-                spuId:spuId
+    querySpuById(spuId) {
+        return axios.get(baseUrl + '/querySpuById', {
+            params: {
+                spuId: spuId
+            }
+        })
+    },
+    /**
+     *根据skuId查询相关spu
+     *
+     * @param {Number} skuId
+     * @returns
+     */
+    querySpuBySku(skuId) {
+        return axios.get(baseUrl + '/querySpuBySku', {
+            params: {
+                skuId: skuId
             }
         })
     }

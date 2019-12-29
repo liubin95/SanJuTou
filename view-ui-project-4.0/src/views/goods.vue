@@ -21,9 +21,31 @@
       display: flex;
       flex-direction: column;
       align-content: center;
+      .info {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .price {
+        font-size: 25px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .stock {
+        width: 10%;
+        font-size: 18px;
+        position: relative;
+        left: 300px;
+        padding-top: 2px;
+        color: gray;
+      }
       .property-list {
         width: 100%;
+        height: 77%;
         float: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
         .property-name {
           width: 10%;
           font-size: 16px;
@@ -46,6 +68,11 @@
         align-items: center;
       }
     }
+    .buy {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
   }
 }
 </style>
@@ -53,16 +80,19 @@
   <div class="goods">
     <div class="good">
       <div class="img">
-        <img
-          src="//img13.360buyimg.com/n1/s450x450_jfs/t1/18843/4/12656/169965/5c99ef93Eab039a45/51c1d29ce04ebea8.jpg"
-        />
+        <img :src="sku.cover" />
       </div>
       <Divider class="diver" type="vertical" />
       <div class="property">
-        <h4>{{spu.proName }} {{spu.info}}</h4>
-        <div>
-          <Icon type="logo-yen" color="red" size="18" />
-          <span>{{sku.oldPrice}}</span>
+        <h1>{{spu.proName }} {{spu.info}}</h1>
+        <div class="info">
+          <div class="price">
+            <Icon type="logo-yen" color="red" size="30" />
+            <span>{{sku.oldPrice}}</span>
+          </div>
+          <div class="stock">
+            <span>库存 {{sku.stock}} 件</span>
+          </div>
         </div>
         <div class="property-list">
           <Row v-for="item in propertyList" :key="item.id" class="property-row">
@@ -76,6 +106,11 @@
             </RadioGroup>
           </Row>
         </div>
+        <div class="buy">
+          <Button type="success" @click="collection">加入收藏</Button>
+          <InputNumber v-model="number" :min="1" :max="sku.stock" :editable="false" size="large"></InputNumber>
+          <Button type="error" class="buy-button" @click="buy">立即购买</Button>
+        </div>
       </div>
     </div>
   </div>
@@ -88,7 +123,8 @@ export default {
       spu: {},
       propertyList: [],
       property: {},
-      sku: {}
+      sku: {},
+      number: 1
     };
   },
   methods: {
@@ -103,7 +139,10 @@ export default {
           if (data.succeeded) {
             this.spu = data.obj;
           } else {
-            this.$Message.error({ content: data.msg, background: true });
+            this.$Message.error({
+              content: data.msg + "-" + data.code,
+              background: true
+            });
           }
           this.$Spin.hide();
         })
@@ -128,7 +167,10 @@ export default {
             });
             this.change(this.property);
           } else {
-            this.$Message.error({ content: data.msg, background: true });
+            this.$Message.error({
+              content: data.msg + "-" + data.code,
+              background: true
+            });
           }
           this.$Spin.hide();
         })
@@ -154,17 +196,43 @@ export default {
       this.$api.sku
         .querySkuByPropertyOptions(property)
         .then(data => {
+          console.log(data);
           if (data.succeeded) {
             this.sku = data.obj;
           } else {
-            this.$Message.error({ content: data.msg, background: true });
+            this.$Message.error({
+              content: data.msg + "-" + data.code,
+              background: true
+            });
           }
         })
         .catch(error => {
           this.$Message.error("请求失败");
           console.error(error);
-          this.$Spin.hide();
         });
+    },
+    //下单
+    buy() {
+      this.$api.customer.checkLogin()
+        .then(data => {
+          if (data.succeeded) {
+            this.$router.push("/new-oder/" + this.sku.id + "/" + this.number);
+          } else {
+            this.$Message.error({
+              content: "请先登录",
+              background: true
+            });
+            this.$router.push("/login");
+          }
+        })
+        .catch(error => {
+          this.$Message.error("请求失败");
+          console.error(error);
+        });
+    },
+    //收藏
+    collection() {
+      console.log("收藏");
     }
   },
   created() {

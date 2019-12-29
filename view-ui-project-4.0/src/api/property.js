@@ -19,6 +19,18 @@ const property = {
                 spuId: spuId
             }
         });
+    },
+    /**
+     *根据sku查询属性
+     *
+     * @param {Number} skuId
+     */
+    queryPropertyBySku(skuId) {
+        return axios.get(baseUrl + '/queryPropertyBySku', {
+            params: {
+                skuId: skuId
+            }
+        });
     }
 
 }

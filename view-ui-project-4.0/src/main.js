@@ -7,7 +7,10 @@ import App from './app.vue';
 import 'view-design/dist/styles/iview.css';
 import axios from 'axios'
 import api from './api' // 导入api接口
+import store from './store/index';
+import vRegion from 'v-region';
 
+Vue.use(vRegion);
 Vue.prototype.$api = api; // 将api挂载到vue的原型上
 Vue.use(VueRouter);
 Vue.use(ViewUI);
@@ -40,4 +43,5 @@ new Vue({
     router: router,
     render: h => h(App),
     components: { App },
+    store,
 });

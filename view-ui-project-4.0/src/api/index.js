@@ -7,6 +7,8 @@ import cate from '@/api/cate';
 import flashSale from '@/api/FlashSale';
 import property from '@/api/property';
 import sku from '@/api/sku';
+import customer from '@/api/customer';
+import address from '@/api/address';
 
 // 其他模块的接口……
 
@@ -17,6 +19,8 @@ export default {
     cate,
     flashSale,
     property,
-    sku
+    sku,
+    customer,
+    address
     // ……
 }

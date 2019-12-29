@@ -6,15 +6,20 @@ Vue.use(Vuex);
 //储存
 const state = {
   // 存储token
-  token: localStorage.getItem('token') ? localStorage.getItem('token') : ''
+  token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
+  userName: localStorage.getItem('userName') ? localStorage.getItem('userName') : ''
 };
 //处理state
 const mutations = {
-    // 修改token，并将token存入localStorage
-    changeLogin (state, token) {
-      state.token = token;
-      localStorage.setItem('token', token);
-    }
+  // 修改token，并将token存入localStorage
+  changeLogin: (state, token) => {
+    state.token = token;
+    localStorage.setItem('token', token);
+  },
+  changeLoginName: (state, name) => {
+    state.userName = name;
+    localStorage.setItem('userName', name);
+  }
 };
 //提交mutations
 const actions = {

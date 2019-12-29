@@ -16,5 +16,18 @@ const sku = {
     querySkuByPropertyOptions(params) {
         return axios.post(baseUrl + '/querySkuByPropertyOptions', params, { headers: { 'Content-Type': 'application/json' } });
     },
+    /**
+     *根据id查询sku
+     *
+     * @param {Number} param skuId
+     * @returns
+     */
+    querySkuById(param) {
+        return axios.get(baseUrl + '/querySkuById', {
+            params: {
+                id: param
+            }
+        })
+    }
 }
 export default sku;

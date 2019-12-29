@@ -3,7 +3,7 @@
 </style>
 <template>
   <div id="app">
-    <windowTop></windowTop>
+    <windowTop v-if="!(this.$route.path=='/login')"></windowTop>
     <div>
       <router-view></router-view>
     </div>

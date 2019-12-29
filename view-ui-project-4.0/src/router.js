@@ -26,6 +26,20 @@ const routers = [
             title: '商品详情'
         },
         component: (resolve) => require(['@/views/goods'], resolve)
+    },
+    {
+        path: '/new-oder/:id/:num',
+        meta: {
+            title: '下单首页'
+        },
+        component: (resolve) => require(['@/views/newOder'], resolve)
+    },
+    {
+        path: '/login',
+        meta: {
+            title: '登录页'
+        },
+        component: (resolve) => require(['@/components/login'], resolve)
     }
 ];
 export default routers;

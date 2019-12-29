@@ -39,17 +39,18 @@
             <img class="logo" src="../images/_ionicons_svg_logo-snapchat.svg" type="image/svg+xml" />
           </div>
           <div class="layout-nav">
-            <MenuItem name="1">
-              <Icon type="ios-navigate"></Icon>Item 1
+            <MenuItem name="1" to="/login">
+              <Icon type="ios-navigate"></Icon>注册/登录
             </MenuItem>
-            <MenuItem name="2">
-              <Icon type="ios-keypad"></Icon>Item 2
+            <MenuItem name="2" to="/userInfo">
+              <Icon type="md-person" />
+              {{name}}
             </MenuItem>
-            <MenuItem name="3">
-              <Icon type="ios-analytics"></Icon>Item 3
-            </MenuItem>
-            <MenuItem name="4">
-              <Icon type="ios-paper"></Icon>Item 4
+            <!-- <MenuItem name="3">
+              <Icon type="ios-analytics"></Icon>我的收藏
+            </MenuItem>-->
+            <MenuItem name="4" @click.native="logOut()">
+              <Icon type="ios-paper"></Icon>注销
             </MenuItem>
           </div>
         </Menu>
@@ -59,6 +60,21 @@
 </template>
 <script>
 export default {
-  name: "windowTop"
+  name: "windowTop",
+  data() {
+    return {};
+  },
+  computed: {
+    name() {
+      return this.$store.state.userName;
+    }
+  },
+  methods: {
+    logOut() {
+      console.log("注销");
+      localStorage.removeItem('token');
+      this.$store.commit("changeLoginName", "游客");
+    }
+  }
 };
 </script>
