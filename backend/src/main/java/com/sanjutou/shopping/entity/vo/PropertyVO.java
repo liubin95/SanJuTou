@@ -12,9 +12,14 @@ public class PropertyVO extends Property {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 对应的选项集合
+     * 对应的选项集合。
      */
     private List<PropertyOption> optionList;
+
+    /**
+     * 对应的选项。
+     */
+    private PropertyOption propertyOption;
 
     public List<PropertyOption> getOptionList() {
         return optionList;
@@ -22,5 +27,13 @@ public class PropertyVO extends Property {
 
     public void setOptionList(List<PropertyOption> optionList) {
         this.optionList = optionList;
+    }
+
+    public PropertyOption getPropertyOption() {
+        return propertyOption;
+    }
+
+    public void setPropertyOption(PropertyOption propertyOption) {
+        this.propertyOption = propertyOption;
     }
 }

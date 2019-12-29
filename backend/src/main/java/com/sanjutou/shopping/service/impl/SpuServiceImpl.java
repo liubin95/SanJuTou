@@ -125,6 +125,12 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         return voAddPrice(spuList, null);
     }
 
+    @Override
+    public Spu querySpuBySku(Integer skuId) {
+        final Sku sku = skuMapper.selectById(skuId);
+        return sku == null ? new Spu() : spuMapper.selectById(sku.getSpuId());
+    }
+
     /**
      * 把sku的价格 增加对应的SpuVO
      *

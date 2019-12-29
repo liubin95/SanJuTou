@@ -53,3 +53,5 @@ my-config:
   token-secret: sanjutou
   #过期时间/天
   expires-time: 7
+  # 静态路径前缀
+  resource-prefix: http://localhost:3333/

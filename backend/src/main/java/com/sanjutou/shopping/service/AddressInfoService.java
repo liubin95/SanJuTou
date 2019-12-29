@@ -1,7 +1,9 @@
 package com.sanjutou.shopping.service;
 
-import com.sanjutou.shopping.entity.AddressInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.AddressInfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AddressInfoService extends IService<AddressInfo> {
 
+    /**
+     * @param customId
+     * @return
+     */
+    List<AddressInfo> queryAddressByCustomId(Integer customId);
 }

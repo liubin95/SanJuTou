@@ -10,6 +10,7 @@ import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 对所有的URL配置
         registry.addInterceptor(optionsInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(tokenInterceptor).addPathPatterns("/**").excludePathPatterns("/image/**");
     }
 
     /**
@@ -72,4 +73,13 @@ public class SpringWebConfig implements WebMvcConfigurer {
         converters.add(gsonHttpMessageConverter);
     }
 
+    /**
+     * 静态文件映射
+     *
+     * @param registry registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/image/**").addResourceLocations("file:/shopping/SanJuTou/image/");
+    }
 }

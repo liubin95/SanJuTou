@@ -41,4 +41,11 @@ public interface SpuService extends IService<Spu> {
      */
     List<SpuVO> querySpuListByFlashSale(FlashSale flashSale);
 
+    /**
+     * 根据skuId查询spu信息
+     *
+     * @param skuId sku的id
+     * @return spu对象
+     */
+    Spu querySpuBySku(Integer skuId);
 }

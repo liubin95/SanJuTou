@@ -1,11 +1,14 @@
 package com.sanjutou.shopping.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -17,17 +20,19 @@ import java.io.Serializable;
  */
 public class OderInfo extends Model<OderInfo> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @Null(groups = {Insert.class})
     private Integer id;
 
     /**
      * 0代表待付款，1代表已付款，2已收货
      */
+    @NotNull(groups = {Insert.class})
     private Integer typeId;
 
     /**
@@ -38,11 +43,13 @@ private static final long serialVersionUID=1L;
     /**
      * 商品id
      */
+    @NotNull(groups = {Insert.class})
     private String skuId;
 
     /**
      * 商品数量
      */
+    @NotNull(groups = {Insert.class})
     private Integer counts;
 
     /**
@@ -63,6 +70,7 @@ private static final long serialVersionUID=1L;
     /**
      * 收货地址id
      */
+    @NotNull(groups = {Insert.class})
     private Integer addressId;
 
     /**
@@ -172,17 +180,20 @@ private static final long serialVersionUID=1L;
     @Override
     public String toString() {
         return "OderInfo{" +
-        "id=" + id +
-        ", typeId=" + typeId +
-        ", customerId=" + customerId +
-        ", skuId=" + skuId +
-        ", counts=" + counts +
-        ", crateDate=" + crateDate +
-        ", payDate=" + payDate +
-        ", doneDate=" + doneDate +
-        ", addressId=" + addressId +
-        ", totalPrice=" + totalPrice +
-        ", note=" + note +
-        "}";
+                "id=" + id +
+                ", typeId=" + typeId +
+                ", customerId=" + customerId +
+                ", skuId=" + skuId +
+                ", counts=" + counts +
+                ", crateDate=" + crateDate +
+                ", payDate=" + payDate +
+                ", doneDate=" + doneDate +
+                ", addressId=" + addressId +
+                ", totalPrice=" + totalPrice +
+                ", note=" + note +
+                "}";
+    }
+
+    public interface Insert {
     }
 }

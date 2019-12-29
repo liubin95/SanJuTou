@@ -1,10 +1,14 @@
 package com.sanjutou.shopping.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sanjutou.shopping.entity.AddressInfo;
 import com.sanjutou.shopping.mapper.AddressInfoMapper;
 import com.sanjutou.shopping.service.AddressInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +21,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressInfoServiceImpl extends ServiceImpl<AddressInfoMapper, AddressInfo> implements AddressInfoService {
 
+    /**
+     *
+     */
+    @Autowired
+    private AddressInfoMapper addressInfoMapper;
+
+    /**
+     * @param customId
+     * @return
+     */
+    @Override
+    public List<AddressInfo> queryAddressByCustomId(Integer customId) {
+        final QueryWrapper<AddressInfo> wrapper = new QueryWrapper<>();
+        wrapper.eq("customer_id", customId);
+        return addressInfoMapper.selectList(wrapper);
+    }
 }

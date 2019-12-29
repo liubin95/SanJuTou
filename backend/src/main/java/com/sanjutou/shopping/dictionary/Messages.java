@@ -22,12 +22,17 @@ public interface Messages extends CommonMessages {
     CodeMessage E0002 = MessageBuilder.INSTANCE.error(2, "缺少必要参数");
 
     /**
-     * 缺少必要参数。
+     * 用户不存在。
      */
     CodeMessage E0003 = MessageBuilder.INSTANCE.error(3, "用户不存在");
 
     /**
-     * 缺少必要参数。
+     * 密码错误。
      */
     CodeMessage E0004 = MessageBuilder.INSTANCE.error(4, "密码错误");
+
+    /**
+     * 邮箱已经注册.
+     */
+    CodeMessage E0005 = MessageBuilder.INSTANCE.error(5, "邮箱已经注册");
 }

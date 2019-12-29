@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sanjutou.shopping.entity.Property;
 import com.sanjutou.shopping.entity.PropertyOption;
+import com.sanjutou.shopping.entity.PropertyOptionSku;
 import com.sanjutou.shopping.entity.Spu;
 import com.sanjutou.shopping.entity.vo.PropertyVO;
 import com.sanjutou.shopping.mapper.PropertyMapper;
 import com.sanjutou.shopping.mapper.PropertyOptionMapper;
+import com.sanjutou.shopping.mapper.PropertyOptionSkuMapper;
 import com.sanjutou.shopping.mapper.SpuMapper;
 import com.sanjutou.shopping.service.PropertyService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -50,6 +52,12 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     @Autowired
     private SpuMapper spuMapper;
 
+    /**
+     * 属性和sku关联的mapper。
+     */
+    @Autowired
+    private PropertyOptionSkuMapper propertyOptionSkuMapper;
+
     @Override
     @Transactional(readOnly = true)
     public List<PropertyVO> queryPropertyBySpu(Integer spuId) {
@@ -75,6 +83,28 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
                 result.add(vo);
             });
         }
+        return result;
+    }
+
+    @Override
+    public List<PropertyVO> queryPropertyBySku(Integer skuId) {
+        final List<PropertyVO> result = new ArrayList<>();
+        // 查询属性和sku关联表数据
+        final QueryWrapper<PropertyOptionSku> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sku_id", skuId);
+        final List<PropertyOptionSku> skuList = propertyOptionSkuMapper.selectList(queryWrapper);
+        // 查询属性选项表数据
+        final List<PropertyOption> propertyOptions = propertyOptionMapper.selectBatchIds(skuList.stream().map(PropertyOptionSku::getOptionId).collect(Collectors.toList()));
+        final Map<Integer, PropertyOption> map = propertyOptions.stream().collect(Collectors.toMap(PropertyOption::getPropertyId, o -> o));
+        // 查询属性表数据
+        final List<Property> propertyList = propertyMapper.selectBatchIds(propertyOptions.stream().map(PropertyOption::getPropertyId).collect(Collectors.toList()));
+        propertyList.forEach(property -> {
+            // 组合数据
+            final PropertyVO vo = new PropertyVO();
+            BeanUtils.copyProperties(property, vo);
+            vo.setPropertyOption(map.getOrDefault(property.getId(), new PropertyOption()));
+            result.add(vo);
+        });
         return result;
     }
 }

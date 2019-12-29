@@ -42,17 +42,19 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     @Override
     public Sku querySkuByPropertyOptions(List<QuerySkuVO> list) {
         final List<List<Integer>> skuIdList = new ArrayList<>();
+        // 查询符合条件的sku集合
         list.forEach(vo -> {
             final QueryWrapper<PropertyOptionSku> propertyOptionSkuQueryWrapper = new QueryWrapper<>();
             propertyOptionSkuQueryWrapper.eq("option_id", vo.getOptionId());
-            // 循环拼接sql
             final List<Integer> idList = propertyOptionSkuMapper.selectList(propertyOptionSkuQueryWrapper).stream().map(PropertyOptionSku::getSkuId).collect(Collectors.toList());
             skuIdList.add(idList);
         });
+        // 交集操作
         final List<Integer> integers = skuIdList.stream().reduce((list1, list2) -> {
             list1.retainAll(list2);
             return list1;
-        }).orElse(Collections.EMPTY_LIST);
+        }).orElse(Collections.emptyList());
+        // 返回响应的sku
         return integers.size() == 1 ? skuMapper.selectById(integers.get(0)) : new Sku();
     }
 }

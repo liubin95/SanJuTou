@@ -23,4 +23,13 @@ public interface PropertyService extends IService<Property> {
      * @return 属性VO集合
      */
     List<PropertyVO> queryPropertyBySpu(Integer spuId);
+
+    /**
+     * 根据sku查询对应的属性值。
+     *
+     * @param skuId skuId
+     * @return 属性VO
+     */
+    List<PropertyVO> queryPropertyBySku(Integer skuId);
+
 }

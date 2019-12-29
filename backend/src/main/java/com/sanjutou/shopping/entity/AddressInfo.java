@@ -3,7 +3,9 @@ package com.sanjutou.shopping.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 /**
  * <p>
@@ -15,7 +17,7 @@ import java.io.Serializable;
  */
 public class AddressInfo extends Model<AddressInfo> {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
@@ -61,7 +63,12 @@ private static final long serialVersionUID=1L;
     /**
      * 区级
      */
-    private String county;
+    private String area;
+
+    /**
+     * 镇级
+     */
+    private String town;
 
 
     public Integer getId() {
@@ -128,12 +135,20 @@ private static final long serialVersionUID=1L;
         this.city = city;
     }
 
-    public String getCounty() {
-        return county;
+    public String getArea() {
+        return area;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
     }
 
     @Override
@@ -143,16 +158,17 @@ private static final long serialVersionUID=1L;
 
     @Override
     public String toString() {
-        return "AddressInfo{" +
-        "id=" + id +
-        ", customerId=" + customerId +
-        ", address=" + address +
-        ", mobile=" + mobile +
-        ", isDefault=" + isDefault +
-        ", name=" + name +
-        ", province=" + province +
-        ", city=" + city +
-        ", county=" + county +
-        "}";
+        return new StringJoiner(", ", AddressInfo.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("customerId=" + customerId)
+                .add("address='" + address + "'")
+                .add("mobile='" + mobile + "'")
+                .add("isDefault=" + isDefault)
+                .add("name='" + name + "'")
+                .add("province='" + province + "'")
+                .add("city='" + city + "'")
+                .add("area='" + area + "'")
+                .add("town='" + town + "'")
+                .toString();
     }
 }

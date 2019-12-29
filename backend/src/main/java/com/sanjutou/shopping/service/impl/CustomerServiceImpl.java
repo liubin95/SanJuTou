@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sanjutou.shopping.dictionary.Messages;
 import com.sanjutou.shopping.entity.Customer;
 import com.sanjutou.shopping.entity.result.Result;
+import com.sanjutou.shopping.entity.vo.CustomerVO;
 import com.sanjutou.shopping.mapper.CustomerMapper;
 import com.sanjutou.shopping.service.CustomerService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,8 +53,8 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
     @Override
     @Transactional(readOnly = true)
-    public Result<String> customerLogin(Customer loginCustomer) {
-        final Result<String> result = new Result<>();
+    public Result<CustomerVO> customerLogin(Customer loginCustomer) {
+        final Result<CustomerVO> result = new Result<>();
         // 根据登陆名查询用户
         final QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name", loginCustomer.getLoginName());
@@ -73,8 +76,20 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
             final Date expiresDate = nowTime.getTime();
             //返回token
             final String token = JWT.create().withHeader(map).withClaim("customerId", customer.getId()).withIssuedAt(new Date()).withExpiresAt(expiresDate).sign(Algorithm.HMAC256(secret));
-            result.setObj(token);
+            final CustomerVO vo = new CustomerVO();
+            vo.setToken(token);
+            vo.setCustomerName(customer.getCustomerName());
+            result.setObj(vo);
         }
         return result;
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        // 根据登陆名查询用户
+        final QueryWrapper<Customer> wrapper = new QueryWrapper<>();
+        wrapper.eq("login_name", email);
+        final List<Customer> customerList = customerMapper.selectList(wrapper);
+        return CollectionUtils.isEmpty(customerList);
     }
 }

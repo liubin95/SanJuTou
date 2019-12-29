@@ -79,5 +79,19 @@ public class SpuController {
         result.setObj(spu);
         return result;
     }
+
+    /**
+     * 根据skuId查询spu信息
+     *
+     * @param skuId sku的id
+     * @return spu对象
+     */
+    @GetMapping("querySpuBySku")
+    @PassToken
+    public Result<Spu> querySpuBySku(@NotNull Integer skuId) {
+        final Result<Spu> result = new Result<>();
+        result.setObj(spuService.querySpuBySku(skuId));
+        return result;
+    }
 }
 

@@ -44,5 +44,19 @@ public class PropertyController {
         result.setObj(propertyService.queryPropertyBySpu(spuId));
         return result;
     }
+
+    /**
+     * 根据sku查询对应的属性值。
+     *
+     * @param skuId skuId
+     * @return 属性VO
+     */
+    @GetMapping("queryPropertyBySku")
+    @PassToken
+    public Result<List<PropertyVO>> queryPropertyBySku(@NotNull Integer skuId) {
+        final Result<List<PropertyVO>> result = new Result<>();
+        result.setObj(propertyService.queryPropertyBySku(skuId));
+        return result;
+    }
 }
 

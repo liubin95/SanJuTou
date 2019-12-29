@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -25,30 +26,32 @@ public class Customer extends Model<Customer> {
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @Null(groups = {Reg.class, Login.class})
     private Integer id;
 
     /**
      * 用户名
      */
+    @NotBlank(groups = {Reg.class})
     private String customerName;
 
     /**
      * 登陆名
      */
-    @NotBlank(groups = {Login.class})
+    @NotBlank(groups = {Login.class, Reg.class})
     @Email
     private String loginName;
 
     /**
      * 密码
      */
-    @NotBlank(groups = {Login.class})
+    @NotBlank(groups = {Login.class, Reg.class})
     private String password;
 
     /**
      * 注册时间
      */
-    private Date regTime;
+    private LocalDateTime regTime;
 
     /**
      * 维系你openId
@@ -87,11 +90,11 @@ public class Customer extends Model<Customer> {
         this.password = password;
     }
 
-    public Date getRegTime() {
+    public LocalDateTime getRegTime() {
         return regTime;
     }
 
-    public void setRegTime(Date regTime) {
+    public void setRegTime(LocalDateTime regTime) {
         this.regTime = regTime;
     }
 
@@ -121,5 +124,8 @@ public class Customer extends Model<Customer> {
     }
 
     public interface Login {
+    }
+
+    public interface Reg {
     }
 }
