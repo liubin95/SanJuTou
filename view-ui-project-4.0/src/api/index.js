@@ -9,6 +9,7 @@ import property from '@/api/property';
 import sku from '@/api/sku';
 import customer from '@/api/customer';
 import address from '@/api/address';
+import oderInfo from '@/api/oder';
 
 // 其他模块的接口……
 
@@ -21,6 +22,7 @@ export default {
     property,
     sku,
     customer,
-    address
+    address,
+    oderInfo
     // ……
 }
