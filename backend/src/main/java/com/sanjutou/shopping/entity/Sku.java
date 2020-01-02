@@ -30,12 +30,12 @@ public class Sku extends Model<Sku> {
     private Integer id;
 
     /**
-     * 原价
+     * 正常价格
      */
     private BigDecimal oldPrice;
 
     /**
-     * 现价
+     * 促销价格
      */
     private BigDecimal newPrice;
 

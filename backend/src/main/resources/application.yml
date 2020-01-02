@@ -5,8 +5,18 @@ server:
 spring:
   application:
     name: shopping
-  mvc:
-    dispatch-options-request: true
+  #实现WebMvcConfigurer后 配置文件内容会失效  mvc:
+  #    dispatch-options-request: true
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true
+    cache-names: sku
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+    password:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root

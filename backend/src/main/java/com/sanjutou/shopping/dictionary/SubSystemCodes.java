@@ -9,7 +9,7 @@ import com.sanjutou.shopping.entity.message.CommonSubSystemCodes;
  */
 public interface SubSystemCodes extends CommonSubSystemCodes {
     /**
-     * 工单系统后台。
+     *
      */
     String SANJUTOU = "SJT";
 

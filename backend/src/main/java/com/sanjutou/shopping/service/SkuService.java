@@ -20,7 +20,15 @@ public interface SkuService extends IService<Sku> {
      * 根据选项集合查询sku
      *
      * @param list ids
-     * @return
+     * @return 对象
      */
     Sku querySkuByPropertyOptions(List<QuerySkuVO> list);
+
+    /**
+     * 查询商品库存。
+     *
+     * @param skuId skuId
+     * @return id无效返回null
+     */
+    Integer queryStockBySkuId(Integer skuId);
 }

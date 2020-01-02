@@ -13,4 +13,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface SkuMapper extends BaseMapper<Sku> {
 
+    /**
+     * 查询sku，行锁
+     *
+     * @param skuId id
+     * @return 结果
+     */
+    Sku querySkuById(Integer skuId);
+
 }

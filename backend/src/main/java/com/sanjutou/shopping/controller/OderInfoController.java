@@ -3,9 +3,11 @@ package com.sanjutou.shopping.controller;
 
 import com.sanjutou.shopping.config.CheckLogin;
 import com.sanjutou.shopping.config.ValidatedException;
+import com.sanjutou.shopping.dictionary.Messages;
 import com.sanjutou.shopping.entity.OderInfo;
 import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.service.OderInfoService;
+import com.sanjutou.shopping.service.SkuService;
 import com.sanjutou.shopping.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -36,6 +37,12 @@ public class OderInfoController {
     @Autowired
     private OderInfoService oderInfoService;
 
+    /**
+     * sku服务。
+     */
+    @Autowired
+    private SkuService skuService;
+
 
     /**
      * 新增订单接口。
@@ -48,18 +55,22 @@ public class OderInfoController {
      */
     @PostMapping("newOder")
     @CheckLogin
-    public Result<OderInfo> newOder(@NotNull @RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException {
-        final Result<OderInfo> result = new Result<>();
-        //token 获取用户id
-        final Integer customerId = JwtUtil.getCustomerIdFromToken(token);
-        oderInfo.setCrateDate(LocalDateTime.now());
-        oderInfo.setCustomerId(customerId);
-        // 下单并付款
-        if (oderInfo.getTypeId() == 1) {
-            oderInfo.setPayDate(LocalDateTime.now());
+    public Result<OderInfo> newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException {
+        Result<OderInfo> result = new Result<>();
+        // 购买数量大于库存数量
+        if (oderInfo.getCounts() > skuService.queryStockBySkuId(oderInfo.getSkuId())) {
+            result.setCodeMsg(Messages.E0006);
+        } else {
+            //token 获取用户id
+            final Integer customerId = JwtUtil.getCustomerIdFromToken(token);
+            oderInfo.setCrateDate(LocalDateTime.now());
+            oderInfo.setCustomerId(customerId);
+            // 下单并付款
+            if (oderInfo.getTypeId() == 1) {
+                oderInfo.setPayDate(LocalDateTime.now());
+            }
+            result = oderInfoService.newOder(oderInfo);
         }
-        oderInfoService.save(oderInfo);
-        result.setObj(oderInfo);
         return result;
     }
 }

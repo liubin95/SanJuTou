@@ -9,6 +9,7 @@ import com.sanjutou.shopping.mapper.PropertyOptionSkuMapper;
 import com.sanjutou.shopping.mapper.SkuMapper;
 import com.sanjutou.shopping.service.SkuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,5 +57,12 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
         }).orElse(Collections.emptyList());
         // 返回响应的sku
         return integers.size() == 1 ? skuMapper.selectById(integers.get(0)) : new Sku();
+    }
+
+    @Override
+    @Cacheable(cacheNames = "sku", key = "#skuId")
+    public Integer queryStockBySkuId(Integer skuId) {
+        final Sku sku = skuMapper.selectById(skuId);
+        return sku == null ? null : sku.getStock();
     }
 }

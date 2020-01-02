@@ -35,4 +35,9 @@ public interface Messages extends CommonMessages {
      * 邮箱已经注册.
      */
     CodeMessage E0005 = MessageBuilder.INSTANCE.error(5, "邮箱已经注册");
+
+    /**
+     * 商品库存不足。
+     */
+    CodeMessage E0006 = MessageBuilder.INSTANCE.error(6, "商品库存不足");
 }

@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.StringJoiner;
 
@@ -23,6 +27,7 @@ public class AddressInfo extends Model<AddressInfo> {
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @Null(groups = {Insert.class})
     private Integer id;
 
     /**
@@ -33,41 +38,50 @@ public class AddressInfo extends Model<AddressInfo> {
     /**
      * 详细地址信息
      */
+    @NotBlank(groups = {Insert.class})
     private String address;
 
     /**
      * 电话
      */
+    @NotBlank(groups = {Insert.class})
     private String mobile;
 
     /**
-     * 是否默认地址。0代表不是，1代表是
+     * 是否默认地址。0代表不是，1代表是 ,2 删除
      */
+    @Min(0)
+    @Max(2)
     private Integer isDefault;
 
     /**
      * 收件人姓名
      */
+    @NotBlank(groups = {Insert.class})
     private String name;
 
     /**
      * 省级
      */
+    @NotBlank(groups = {Insert.class})
     private String province;
 
     /**
      * 市级
      */
+    @NotBlank(groups = {Insert.class})
     private String city;
 
     /**
      * 区级
      */
+    @NotBlank(groups = {Insert.class})
     private String area;
 
     /**
      * 镇级
      */
+    @NotBlank(groups = {Insert.class})
     private String town;
 
 
@@ -170,5 +184,8 @@ public class AddressInfo extends Model<AddressInfo> {
                 .add("area='" + area + "'")
                 .add("town='" + town + "'")
                 .toString();
+    }
+
+    public interface Insert {
     }
 }

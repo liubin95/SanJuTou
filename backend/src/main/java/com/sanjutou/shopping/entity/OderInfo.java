@@ -25,9 +25,9 @@ public class OderInfo extends Model<OderInfo> {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ID_WORKER)
     @Null(groups = {Insert.class})
-    private Integer id;
+    private Long id;
 
     /**
      * 0代表待付款，1代表已付款，2已收货
@@ -44,7 +44,7 @@ public class OderInfo extends Model<OderInfo> {
      * 商品id
      */
     @NotNull(groups = {Insert.class})
-    private String skuId;
+    private Integer skuId;
 
     /**
      * 商品数量
@@ -83,12 +83,11 @@ public class OderInfo extends Model<OderInfo> {
      */
     private String note;
 
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -108,11 +107,11 @@ public class OderInfo extends Model<OderInfo> {
         this.customerId = customerId;
     }
 
-    public String getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(String skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 
