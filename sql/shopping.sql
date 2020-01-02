@@ -11,7 +11,7 @@
  Target Server Version : 50641
  File Encoding         : 65001
 
- Date: 29/12/2019 14:23:53
+ Date: 02/01/2020 15:22:38
 */
 
 SET NAMES utf8mb4;
@@ -26,14 +26,14 @@ CREATE TABLE `address_info`  (
   `customer_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户id',
   `address` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '详细地址信息',
   `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '电话',
-  `is_default` smallint(2) NOT NULL DEFAULT 0 COMMENT '是否默认地址。0代表不是，1代表是',
+  `is_default` smallint(2) NOT NULL DEFAULT 0 COMMENT '是否默认地址。0代表不是，1代表是,2 删除',
   `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '收件人姓名',
   `province` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省级',
   `city` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市级',
   `area` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区级',
   `town` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '镇级',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址信息表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地址信息表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for category
@@ -99,10 +99,10 @@ CREATE TABLE `flash_sale_sku`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `oder_info`;
 CREATE TABLE `oder_info`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` bigint(25) NOT NULL COMMENT '主键',
   `type_id` int(11) NOT NULL DEFAULT 0 COMMENT '0代表待付款，1代表已付款，2已收货',
   `customer_id` int(11) NOT NULL DEFAULT 0 COMMENT '用户id',
-  `sku_id` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '商品id',
+  `sku_id` int(11) NOT NULL DEFAULT 0 COMMENT '商品id',
   `counts` int(11) NOT NULL DEFAULT 0 COMMENT '商品数量',
   `crate_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `pay_date` datetime(0) NULL DEFAULT NULL COMMENT '付款时间',
@@ -111,7 +111,7 @@ CREATE TABLE `oder_info`  (
   `total_price` decimal(10, 2) NOT NULL COMMENT '总价',
   `note` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '买家留言',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for property
