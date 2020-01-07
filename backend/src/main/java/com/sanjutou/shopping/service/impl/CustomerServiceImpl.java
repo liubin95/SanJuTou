@@ -37,8 +37,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
     /**
      * customerMapper。
      */
-    @Autowired
-    private CustomerMapper customerMapper;
+    private final CustomerMapper customerMapper;
     /**
      * 密钥。
      */
@@ -50,6 +49,11 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
      */
     @Value("${my-config.expires-time}")
     private int expiresTime;
+
+    @Autowired
+    public CustomerServiceImpl(CustomerMapper customerMapper) {
+        this.customerMapper = customerMapper;
+    }
 
     @Override
     @Transactional(readOnly = true)

@@ -28,7 +28,7 @@ public class WebLogAspect {
     /**
      * LOGGER.
      */
-    private final static Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WebLogAspect.class);
 
     /**
      * 以 controller 包下定义的所有请求为切入点.

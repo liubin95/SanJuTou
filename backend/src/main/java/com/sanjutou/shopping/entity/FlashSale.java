@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -26,7 +26,7 @@ public class FlashSale extends Model<FlashSale> {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * 状态 0 无效 1有效
@@ -41,11 +41,11 @@ public class FlashSale extends Model<FlashSale> {
         this.id = id;
     }
 
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 

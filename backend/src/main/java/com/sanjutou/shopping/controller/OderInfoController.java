@@ -34,14 +34,18 @@ public class OderInfoController {
     /**
      * oderInfoService
      */
-    @Autowired
-    private OderInfoService oderInfoService;
+    private final OderInfoService oderInfoService;
 
     /**
      * sku服务。
      */
+    private final SkuService skuService;
+
     @Autowired
-    private SkuService skuService;
+    public OderInfoController(OderInfoService oderInfoService, SkuService skuService) {
+        this.oderInfoService = oderInfoService;
+        this.skuService = skuService;
+    }
 
 
     /**

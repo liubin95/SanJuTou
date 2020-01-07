@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 /**
  * <p>
@@ -30,16 +31,8 @@ public class FlashSaleSku extends Model<FlashSaleSku> {
     /**
      * 商品id
      */
-    private Integer spuId;
+    private Integer skuId;
 
-    @Override
-    public String toString() {
-        return "FlashSaleSku{" +
-                "id=" + id +
-                ", flashId=" + flashId +
-                ", spuId=" + spuId +
-                "} ";
-    }
 
     public Integer getId() {
         return id;
@@ -57,16 +50,26 @@ public class FlashSaleSku extends Model<FlashSaleSku> {
         this.flashId = flashId;
     }
 
-    public Integer getSpuId() {
-        return spuId;
-    }
-
-    public void setSpuId(Integer spuId) {
-        this.spuId = spuId;
-    }
 
     @Override
     protected Serializable pkVal() {
         return this.id;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", FlashSaleSku.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("flashId=" + flashId)
+                .add("skuId=" + skuId)
+                .toString();
     }
 }

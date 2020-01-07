@@ -28,8 +28,12 @@ public class PropertyController {
     /**
      * 属性服务
      */
+    private final PropertyService propertyService;
+
     @Autowired
-    private PropertyService propertyService;
+    public PropertyController(PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
 
     /**
      * 根据spu查询属性列表

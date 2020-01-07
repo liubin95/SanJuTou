@@ -37,26 +37,30 @@ public class PropertyServiceImpl extends ServiceImpl<PropertyMapper, Property> i
     /**
      * propertyMapper
      */
-    @Autowired
-    private PropertyMapper propertyMapper;
+    private final PropertyMapper propertyMapper;
 
     /**
      * propertyOptionMapper
      */
-    @Autowired
-    private PropertyOptionMapper propertyOptionMapper;
+    private final PropertyOptionMapper propertyOptionMapper;
 
     /**
      * spuMapper
      */
-    @Autowired
-    private SpuMapper spuMapper;
+    private final SpuMapper spuMapper;
 
     /**
      * 属性和sku关联的mapper。
      */
+    private final PropertyOptionSkuMapper propertyOptionSkuMapper;
+
     @Autowired
-    private PropertyOptionSkuMapper propertyOptionSkuMapper;
+    public PropertyServiceImpl(PropertyMapper propertyMapper, PropertyOptionMapper propertyOptionMapper, SpuMapper spuMapper, PropertyOptionSkuMapper propertyOptionSkuMapper) {
+        this.propertyMapper = propertyMapper;
+        this.propertyOptionMapper = propertyOptionMapper;
+        this.spuMapper = spuMapper;
+        this.propertyOptionSkuMapper = propertyOptionSkuMapper;
+    }
 
     @Override
     @Transactional(readOnly = true)

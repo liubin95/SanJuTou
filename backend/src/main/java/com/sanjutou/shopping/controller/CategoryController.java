@@ -8,11 +8,9 @@ import com.sanjutou.shopping.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -31,8 +29,12 @@ public class CategoryController {
     /**
      * categoryService.
      */
+    private final CategoryService categoryService;
+
     @Autowired
-    private CategoryService categoryService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     /**
      * 获取全部分类。
@@ -42,18 +44,6 @@ public class CategoryController {
     @GetMapping("queryAllCategory")
     @PassToken
     public Result<List<Category>> queryAllCategory() {
-        final Result<List<Category>> result = new Result<>();
-        result.setObj(categoryService.list());
-        return result;
-    }
-
-    /**
-     * 用户id】获取demo
-     *
-     * @param token
-     * @return
-     */
-    public Result<List<Category>> demo(@NotBlank @RequestHeader("token") String token) {
         final Result<List<Category>> result = new Result<>();
         result.setObj(categoryService.list());
         return result;

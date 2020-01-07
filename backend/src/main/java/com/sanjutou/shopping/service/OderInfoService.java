@@ -22,4 +22,13 @@ public interface OderInfoService extends IService<OderInfo> {
      */
     Result<OderInfo> newOder(OderInfo oderInfo);
 
+
+    /**
+     * 新增秒杀订单
+     *
+     * @param oderInfo 订单信息
+     * @return true成功；false 失败
+     */
+    boolean newFlashSaleOder(OderInfo oderInfo);
+
 }

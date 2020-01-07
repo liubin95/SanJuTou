@@ -29,8 +29,12 @@ public class SpecificationController {
     /**
      * specificationService.
      */
+    private final SpecificationService specificationService;
+
     @Autowired
-    private SpecificationService specificationService;
+    public SpecificationController(SpecificationService specificationService) {
+        this.specificationService = specificationService;
+    }
 
     /**
      * 分类下规格及选项。

@@ -34,8 +34,12 @@ public class SkuController {
     /**
      * skuService
      */
+    private final SkuService skuService;
+
     @Autowired
-    private SkuService skuService;
+    public SkuController(SkuService skuService) {
+        this.skuService = skuService;
+    }
 
     /**
      * 根据选项集合查询sku

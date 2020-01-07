@@ -1,6 +1,5 @@
 package com.sanjutou.shopping.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sanjutou.shopping.dictionary.Messages;
 import com.sanjutou.shopping.entity.OderInfo;
@@ -30,14 +29,16 @@ public class OderInfoServiceImpl extends ServiceImpl<OderInfoMapper, OderInfo> i
     /**
      * skuMapper.
      */
-    @Autowired
-    private SkuMapper skuMapper;
+    private final SkuMapper skuMapper;
 
-    /**
-     * oderInfoMapper.
-     */
+    private final OderInfoMapper oderInfoMapper;
+
+
     @Autowired
-    private OderInfoMapper oderInfoMapper;
+    public OderInfoServiceImpl(SkuMapper skuMapper, OderInfoMapper oderInfoMapper) {
+        this.skuMapper = skuMapper;
+        this.oderInfoMapper = oderInfoMapper;
+    }
 
     /**
      * beforeInvocation 方法执行之前删除库存的缓存
@@ -59,12 +60,31 @@ public class OderInfoServiceImpl extends ServiceImpl<OderInfoMapper, OderInfo> i
             sku.setSales(sku.getSales() + oderInfo.getCounts());
             sku.setStock(sku.getStock() - oderInfo.getCounts());
             skuMapper.updateById(sku);
-            // 获取id的方法
-            System.out.println("IdWorker.getId() = " + IdWorker.getId());
             //生成订单
             oderInfo.setTotalPrice(sku.getOldPrice().multiply(new BigDecimal(oderInfo.getCounts())));
             oderInfoMapper.insert(oderInfo);
         }
         return result;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean newFlashSaleOder(OderInfo oderInfo) {
+        boolean result = true;
+        final Sku sku = skuMapper.querySkuById(oderInfo.getSkuId());
+        if (sku.getStock() < oderInfo.getCounts()) {
+            result = false;
+        } else {
+            // 修改库存和销量
+            sku.setSales(sku.getSales() + oderInfo.getCounts());
+            sku.setStock(sku.getStock() - oderInfo.getCounts());
+            skuMapper.updateById(sku);
+            //生成订单
+            oderInfo.setTotalPrice(sku.getNewPrice().multiply(new BigDecimal(oderInfo.getCounts())));
+            oderInfo.insertOrUpdate();
+        }
+        return result;
+    }
+
+
 }

@@ -31,10 +31,14 @@ import java.util.List;
 public class AddressInfoController {
 
     /**
-     *
+     * 地址信服务
      */
+    private final AddressInfoService addressInfoService;
+
     @Autowired
-    private AddressInfoService addressInfoService;
+    public AddressInfoController(AddressInfoService addressInfoService) {
+        this.addressInfoService = addressInfoService;
+    }
 
     /**
      * 查询用户的所有地址信息。

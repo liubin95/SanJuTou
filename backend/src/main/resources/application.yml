@@ -5,18 +5,43 @@ server:
 spring:
   application:
     name: shopping
-  #实现WebMvcConfigurer后 配置文件内容会失效  mvc:
-  #    dispatch-options-request: true
+    #实现WebMvcConfigurer后 配置文件内容会失效
   cache:
     type: redis
     redis:
       cache-null-values: true
-    cache-names: sku
+    cache-names: sku,flash-sale-sku,flash-sale-mq-list
   redis:
     database: 1
     host: localhost
     port: 6379
     password:
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    # 回调类型
+    publisher-confirm-type: correlated
+    # 开启回调
+    publisher-returns: true
+    listener:
+      type: simple
+      simple:
+        #手动确认-设置后失效
+        acknowledge-mode: manual
+        concurrency: 1
+        max-concurrency: 1
+        retry:
+          enabled: true
+          max-attempts: 3
+          # 时间策略因子
+          multiplier: 1.0
+          initial-interval: 1000ms
+          max-interval: 10000ms
+          # 无状态重试
+          stateless: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -54,7 +79,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
     id-type: 0
@@ -65,3 +90,8 @@ my-config:
   expires-time: 7
   # 静态路径前缀
   resource-prefix: http://localhost:3333/
+logging:
+  file:
+    name: /data/shopping.log
+  level:
+    root: info

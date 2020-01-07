@@ -24,10 +24,14 @@ import java.util.List;
 public class AddressInfoServiceImpl extends ServiceImpl<AddressInfoMapper, AddressInfo> implements AddressInfoService {
 
     /**
-     *
+     * 地址信息mapper。
      */
+    private final AddressInfoMapper addressInfoMapper;
+
     @Autowired
-    private AddressInfoMapper addressInfoMapper;
+    public AddressInfoServiceImpl(AddressInfoMapper addressInfoMapper) {
+        this.addressInfoMapper = addressInfoMapper;
+    }
 
     @Override
     public List<AddressInfo> queryAddressByCustomId(Integer customId) {

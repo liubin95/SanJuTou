@@ -1,6 +1,7 @@
 package com.sanjutou.shopping.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.FlashSale;
 import com.sanjutou.shopping.entity.Sku;
 import com.sanjutou.shopping.entity.vo.QuerySkuVO;
 
@@ -31,4 +32,21 @@ public interface SkuService extends IService<Sku> {
      * @return id无效返回null
      */
     Integer queryStockBySkuId(Integer skuId);
+
+
+    /**
+     * 查询秒杀的skuId列表，缓存预热
+     *
+     * @param flashSale 秒杀活动
+     * @return 集合
+     */
+    List<Integer> queryFlashSaleSku(FlashSale flashSale);
+
+    /**
+     * 秒杀预热，把库存放入到redis的秒杀缓存中
+     *
+     * @param skuId skuId
+     * @return 集合
+     */
+    Integer preloadFlashSale(Integer skuId);
 }

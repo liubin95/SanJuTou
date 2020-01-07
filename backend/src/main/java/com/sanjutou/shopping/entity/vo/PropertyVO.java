@@ -4,6 +4,7 @@ import com.sanjutou.shopping.entity.Property;
 import com.sanjutou.shopping.entity.PropertyOption;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * @author admin
@@ -35,5 +36,13 @@ public class PropertyVO extends Property {
 
     public void setPropertyOption(PropertyOption propertyOption) {
         this.propertyOption = propertyOption;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PropertyVO.class.getSimpleName() + "[", "]")
+                .add("optionList=" + optionList)
+                .add("propertyOption=" + propertyOption)
+                .toString();
     }
 }

@@ -29,8 +29,12 @@ public class SpecificationServiceImpl extends ServiceImpl<SpecificationMapper, S
     /**
      * specificationMapper。
      */
+    private final SpecificationMapper specificationMapper;
+
     @Autowired
-    SpecificationMapper specificationMapper;
+    public SpecificationServiceImpl(SpecificationMapper specificationMapper) {
+        this.specificationMapper = specificationMapper;
+    }
 
     @Override
     public List<SpecificationVO> queryCategorySpec(Integer categoryId) {

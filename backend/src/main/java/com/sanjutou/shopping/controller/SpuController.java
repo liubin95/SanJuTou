@@ -34,8 +34,12 @@ public class SpuController {
     /**
      * SpuService.
      */
+    private final SpuService spuService;
+
     @Autowired
-    private SpuService spuService;
+    public SpuController(SpuService spuService) {
+        this.spuService = spuService;
+    }
 
     /**
      * 根据规格id集合，返回商品集合。

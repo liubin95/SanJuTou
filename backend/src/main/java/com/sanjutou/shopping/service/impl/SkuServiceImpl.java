@@ -2,9 +2,12 @@ package com.sanjutou.shopping.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sanjutou.shopping.entity.FlashSale;
+import com.sanjutou.shopping.entity.FlashSaleSku;
 import com.sanjutou.shopping.entity.PropertyOptionSku;
 import com.sanjutou.shopping.entity.Sku;
 import com.sanjutou.shopping.entity.vo.QuerySkuVO;
+import com.sanjutou.shopping.mapper.FlashSaleSkuMapper;
 import com.sanjutou.shopping.mapper.PropertyOptionSkuMapper;
 import com.sanjutou.shopping.mapper.SkuMapper;
 import com.sanjutou.shopping.service.SkuService;
@@ -31,14 +34,24 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     /**
      * skuMapper
      */
-    @Autowired
-    private SkuMapper skuMapper;
+    private final SkuMapper skuMapper;
 
     /**
      * propertyOptionSkuMapper
      */
+    private final PropertyOptionSkuMapper propertyOptionSkuMapper;
+
+    /**
+     * flashSaleSkuMapper
+     */
+    private final FlashSaleSkuMapper flashSaleSkuMapper;
+
     @Autowired
-    private PropertyOptionSkuMapper propertyOptionSkuMapper;
+    public SkuServiceImpl(SkuMapper skuMapper, PropertyOptionSkuMapper propertyOptionSkuMapper, FlashSaleSkuMapper flashSaleSkuMapper) {
+        this.skuMapper = skuMapper;
+        this.propertyOptionSkuMapper = propertyOptionSkuMapper;
+        this.flashSaleSkuMapper = flashSaleSkuMapper;
+    }
 
     @Override
     public Sku querySkuByPropertyOptions(List<QuerySkuVO> list) {
@@ -60,9 +73,25 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     }
 
     @Override
-    @Cacheable(cacheNames = "sku", key = "#skuId")
+    @Cacheable(cacheNames = {"sku"}, key = "#skuId")
     public Integer queryStockBySkuId(Integer skuId) {
         final Sku sku = skuMapper.selectById(skuId);
         return sku == null ? null : sku.getStock();
+    }
+
+
+    @Override
+    @Cacheable(cacheNames = "flash-sale-sku", key = "#skuId")
+    public Integer preloadFlashSale(Integer skuId) {
+        final Sku sku = skuMapper.selectById(skuId);
+        return sku == null ? null : sku.getStock();
+    }
+
+    @Override
+    public List<Integer> queryFlashSaleSku(FlashSale flashSale) {
+        final QueryWrapper<FlashSaleSku> wrapper = new QueryWrapper<>();
+        wrapper.eq("flash_id", flashSale.getId());
+        final List<FlashSaleSku> list = flashSaleSkuMapper.selectList(wrapper);
+        return list.stream().map(FlashSaleSku::getSkuId).collect(Collectors.toList());
     }
 }

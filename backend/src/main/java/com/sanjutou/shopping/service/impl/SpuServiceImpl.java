@@ -42,26 +42,30 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     /**
      * spuMapper.
      */
-    @Autowired
-    private SpuMapper spuMapper;
+    private final SpuMapper spuMapper;
 
     /**
      * skuMapper.
      */
-    @Autowired
-    private SkuMapper skuMapper;
+    private final SkuMapper skuMapper;
 
     /**
      * 规格选项的mapper.
      */
-    @Autowired
-    private SpecificationOptionSkuMapper specificationOptionSkuMapper;
+    private final SpecificationOptionSkuMapper specificationOptionSkuMapper;
 
     /**
      * 秒杀mapper
      */
+    private final FlashSaleSkuMapper flashSaleSkuMapper;
+
     @Autowired
-    private FlashSaleSkuMapper flashSaleSkuMapper;
+    public SpuServiceImpl(SpuMapper spuMapper, SkuMapper skuMapper, SpecificationOptionSkuMapper specificationOptionSkuMapper, FlashSaleSkuMapper flashSaleSkuMapper) {
+        this.spuMapper = spuMapper;
+        this.skuMapper = skuMapper;
+        this.specificationOptionSkuMapper = specificationOptionSkuMapper;
+        this.flashSaleSkuMapper = flashSaleSkuMapper;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -99,7 +103,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
                     .collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o2));
             // 获取全部spu
             final List<Spu> spuList = spuMapper.selectBatchIds(idSkuMap.keySet());
-            result = voAddPrice(spuList, skuList);
+            result = voAddPrice(spuList, skuList, false);
         }
         return result;
     }
@@ -112,17 +116,28 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
         queryWrapper.and(q -> q.eq("cate_id", id).eq("status", 1));
         final List<Spu> spuList = spuMapper.selectList(queryWrapper);
         // 增加价格属性
-        return voAddPrice(spuList, null);
+        return voAddPrice(spuList, null, false);
     }
 
     @Override
     public List<SpuVO> querySpuListByFlashSale(FlashSale flashSale) {
+        // 查询秒杀活动
         final QueryWrapper<FlashSaleSku> wrapper = new QueryWrapper<>();
         wrapper.eq("flash_id", flashSale.getId());
         final List<FlashSaleSku> list = flashSaleSkuMapper.selectList(wrapper);
-        final List<Integer> spuIdList = list.stream().map(FlashSaleSku::getSpuId).collect(Collectors.toList());
-        final List<Spu> spuList = spuMapper.selectBatchIds(spuIdList);
-        return voAddPrice(spuList, null);
+        List<SpuVO> result;
+        if (CollectionUtils.isNotEmpty(list)) {
+            final List<Integer> skuIdList = list.stream().map(FlashSaleSku::getSkuId).collect(Collectors.toList());
+            // 查询对应的sku
+            final List<Sku> skuList = skuMapper.selectBatchIds(skuIdList);
+            // 查询对应spu
+            final List<Spu> spuList = spuMapper.selectBatchIds(skuList.stream().map(Sku::getSpuId).collect(Collectors.toList()));
+            result = voAddPrice(spuList, skuList, true);
+        } else {
+            result = Collections.emptyList();
+        }
+        return result;
+
     }
 
     @Override
@@ -134,11 +149,12 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
     /**
      * 把sku的价格 增加对应的SpuVO
      *
-     * @param spuList spuList
-     * @param skuList skuList 为空时，对价格不敏感，首页展示用
+     * @param spuList    spuList
+     * @param skuList    skuList 为空时，对价格不敏感，首页展示用
+     * @param isNewPrice 是否为促销价格
      * @return spuVO 集合
      */
-    private List<SpuVO> voAddPrice(List<Spu> spuList, List<Sku> skuList) {
+    private List<SpuVO> voAddPrice(List<Spu> spuList, List<Sku> skuList, boolean isNewPrice) {
         if (CollectionUtils.isEmpty(skuList)) {
             // spuID 集合
             final List<Integer> spuIdList = spuList.stream()
@@ -149,7 +165,12 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, Spu> implements SpuSe
             // 获取sku
             skuList = skuMapper.selectList(skuQueryWrapper);
         }
-        final Map<Integer, BigDecimal> idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o1.compareTo(o2) > 0 ? o1 : o2));
+        Map<Integer, BigDecimal> idSkuMap;
+        if (isNewPrice) {
+            idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getNewPrice, (o1, o2) -> o1.compareTo(o2) > 0 ? o1 : o2));
+        } else {
+            idSkuMap = skuList.stream().collect(Collectors.toMap(Sku::getSpuId, Sku::getOldPrice, (o1, o2) -> o1.compareTo(o2) > 0 ? o1 : o2));
+        }
         //整合数据
         return spuList.stream().map(vo -> {
             final SpuVO temp = new SpuVO();
