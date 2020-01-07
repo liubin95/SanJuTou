@@ -11,7 +11,7 @@
  Target Server Version : 50641
  File Encoding         : 65001
 
- Date: 02/01/2020 15:22:38
+ Date: 07/01/2020 08:59:45
 */
 
 SET NAMES utf8mb4;
@@ -81,7 +81,7 @@ CREATE TABLE `flash_sale`  (
   `start_time` datetime(0) NOT NULL COMMENT '开始时间',
   `status` int(1) NULL DEFAULT 1 COMMENT '0过期 1有效',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for flash_sale_sku
@@ -90,7 +90,7 @@ DROP TABLE IF EXISTS `flash_sale_sku`;
 CREATE TABLE `flash_sale_sku`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `flash_id` int(11) NOT NULL COMMENT '秒杀的id',
-  `spu_id` int(11) NOT NULL COMMENT '对应的spuid',
+  `sku_id` int(11) NOT NULL COMMENT '对应的skuid',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Compact;
 
