@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const config = require('./src/config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
@@ -8,11 +9,16 @@ const fs = require('fs');
 fs.open('./src/config/env.js', 'w', function (err, fd) {
     const buf = 'export default "development";';
     // fs.write(fd, buf, 0, buf.length, 0, function (err, written, buffer){});
-    fs.write(fd, buf, 0, 'utf-8', function(err, written, buffer) {});
+    fs.write(fd, buf, 0, 'utf-8', function (err, written, buffer) { });
 });
 
 module.exports = merge(webpackBaseConfig, {
     devtool: '#source-map',
+    devServer: {
+        proxy: config.dev.proxyTable,
+        host: config.dev.host,
+        port: config.dev.port,
+    },
     output: {
         publicPath: '/dist/',
         filename: '[name].js',

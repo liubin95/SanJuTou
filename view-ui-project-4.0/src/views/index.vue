@@ -68,7 +68,7 @@
         font-family: "Microsoft YaHei", "Heiti SC", tahoma, arial,
           "Hiragino Sans GB", sans-serif;
       }
-      .flash{
+      .flash {
         height: 80px;
         width: 80xp;
       }
@@ -84,7 +84,7 @@
       }
       .item {
         display: flex;
-        justify-content: space-around;;
+        justify-content: space-around;
         align-items: center;
         flex-direction: row;
       }

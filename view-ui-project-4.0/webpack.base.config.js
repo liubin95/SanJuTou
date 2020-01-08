@@ -1,16 +1,20 @@
 const path = require('path');
 const webpack = require('webpack');
+const config = require('./src/config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 function resolve(dir) {
     return path.join(__dirname, dir)
-  }
+}
 module.exports = {
     entry: {
         main: './src/main',
         vendors: './src/vendors'
     },
     output: {
-        path: path.join(__dirname, './dist')
+        path: path.join(__dirname, './dist'),
+        publicPath: process.env.NODE_ENV === 'production'
+            ? config.build.assetsPublicPath
+            : config.dev.assetsPublicPath
     },
     module: {
         rules: [
