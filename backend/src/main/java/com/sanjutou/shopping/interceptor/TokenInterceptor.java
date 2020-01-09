@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sanjutou.shopping.config.CheckLogin;
 import com.sanjutou.shopping.config.PassToken;
@@ -39,12 +40,15 @@ public class TokenInterceptor implements HandlerInterceptor {
     /**
      * customerService.
      */
+    private final CustomerService customerService;
+
     @Autowired
-    private CustomerService customerService;
+    public TokenInterceptor(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws IOException {
-        boolean result = true;
         // 从 http 请求头中取出 token
         String token = httpServletRequest.getHeader("token");
 
@@ -54,8 +58,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!method.isAnnotationPresent(PassToken.class)) {
             // 执行认证
             if (token == null) {
-                result = false;
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "token为空");
+                return false;
             } else {
                 try {
                     // 验证 token
@@ -63,34 +67,40 @@ public class TokenInterceptor implements HandlerInterceptor {
                     DecodedJWT jwt = jwtVerifier.verify(token);
                     // 判断是否过期
                     if (jwt.getExpiresAt().before(new Date())) {
-                        result = false;
                         httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token过期");
+                        return false;
                     }
-                } catch (JWTDecodeException j) {
-                    result = false;
+                } catch (JWTDecodeException e) {
                     httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token校验失败");
+                    return false;
+                } catch (TokenExpiredException e) {
+                    httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token过期");
+                    return false;
                 }
             }
         }
         // 注解checkLogin,没有则不校验
         if (method.isAnnotationPresent(CheckLogin.class)) {
             if (token == null) {
-                result = false;
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "token为空");
+                return false;
             } else {
                 try {
                     final Integer id = JwtUtil.getCustomerIdFromToken(token);
                     final Customer customer = customerService.getById(id);
                     if (customer == null) {
-                        result = false;
                         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "无效的用户");
+                        return false;
                     }
                 } catch (JWTDecodeException e) {
-                    result = false;
                     httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token校验失败");
+                    return false;
+                } catch (TokenExpiredException e) {
+                    httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "token过期");
+                    return false;
                 }
             }
         }
-        return result;
+        return true;
     }
 }

@@ -27,14 +27,18 @@ public class SpringWebConfig implements WebMvcConfigurer {
     /**
      * token拦截器。
      */
-    @Autowired
-    private TokenInterceptor tokenInterceptor;
+    private final TokenInterceptor tokenInterceptor;
 
     /**
      * options请求拦截器。
      */
+    private final OptionsInterceptor optionsInterceptor;
+
     @Autowired
-    private OptionsInterceptor optionsInterceptor;
+    public SpringWebConfig(TokenInterceptor tokenInterceptor, OptionsInterceptor optionsInterceptor) {
+        this.tokenInterceptor = tokenInterceptor;
+        this.optionsInterceptor = optionsInterceptor;
+    }
 
     /**
      * 全局跨域。

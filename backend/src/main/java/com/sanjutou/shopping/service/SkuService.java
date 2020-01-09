@@ -31,7 +31,7 @@ public interface SkuService extends IService<Sku> {
      * @param skuId skuId
      * @return id无效返回null
      */
-    Integer queryStockBySkuId(Integer skuId);
+    Integer queryStockBySkuId(Integer skuId) throws InterruptedException;
 
 
     /**

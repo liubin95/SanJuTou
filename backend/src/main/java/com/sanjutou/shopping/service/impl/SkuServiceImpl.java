@@ -11,13 +11,18 @@ import com.sanjutou.shopping.mapper.FlashSaleSkuMapper;
 import com.sanjutou.shopping.mapper.PropertyOptionSkuMapper;
 import com.sanjutou.shopping.mapper.SkuMapper;
 import com.sanjutou.shopping.service.SkuService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 /**
@@ -47,11 +52,20 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
     private final FlashSaleSkuMapper flashSaleSkuMapper;
 
     @Autowired
-    public SkuServiceImpl(SkuMapper skuMapper, PropertyOptionSkuMapper propertyOptionSkuMapper, FlashSaleSkuMapper flashSaleSkuMapper) {
+    public SkuServiceImpl(SkuMapper skuMapper, PropertyOptionSkuMapper propertyOptionSkuMapper, FlashSaleSkuMapper flashSaleSkuMapper, RedisLockRegistry lockRegistry) {
         this.skuMapper = skuMapper;
         this.propertyOptionSkuMapper = propertyOptionSkuMapper;
         this.flashSaleSkuMapper = flashSaleSkuMapper;
+        this.lockRegistry = lockRegistry;
     }
+
+    /**
+     * 分布式锁
+     */
+    private final RedisLockRegistry lockRegistry;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SkuServiceImpl.class);
+
 
     @Override
     public Sku querySkuByPropertyOptions(List<QuerySkuVO> list) {
@@ -74,9 +88,21 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, Sku> implements SkuSe
 
     @Override
     @Cacheable(cacheNames = {"sku"}, key = "#skuId")
-    public Integer queryStockBySkuId(Integer skuId) {
-        final Sku sku = skuMapper.selectById(skuId);
-        return sku == null ? null : sku.getStock();
+    public Integer queryStockBySkuId(Integer skuId) throws InterruptedException {
+        // 获取锁
+        Integer result;
+        Lock lock = lockRegistry.obtain(String.valueOf(skuId));
+        if (lock.tryLock()) {
+            final Sku sku = skuMapper.selectById(skuId);
+            lock.unlock();
+            result = sku == null ? null : sku.getStock();
+        } else {
+            LOGGER.info("获取锁失败：{}", skuId);
+            // 休眠重试
+            TimeUnit.MILLISECONDS.sleep(100);
+            result = queryStockBySkuId(skuId);
+        }
+        return result;
     }
 
 

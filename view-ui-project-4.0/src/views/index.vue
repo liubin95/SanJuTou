@@ -103,8 +103,8 @@
       </div>
       <div class="cateGory">
         <List header="分类列表" border size="large">
-          <ListItem v-for="item in cateList" :key="item.id">
-            <span class="list-span" @click="handleStart(item.id)">{{item.categoryName}}</span>
+          <ListItem v-for="item in cateList" :key="item.id" @click="handleStart(item.id)">
+            <span class="list-span">{{item.categoryName}}</span>
           </ListItem>
         </List>
       </div>

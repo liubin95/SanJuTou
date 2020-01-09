@@ -59,7 +59,7 @@ public class OderInfoController {
      */
     @PostMapping("newOder")
     @CheckLogin
-    public Result<OderInfo> newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException {
+    public Result<OderInfo> newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException, InterruptedException {
         Result<OderInfo> result = new Result<>();
         // 购买数量大于库存数量
         if (oderInfo.getCounts() > skuService.queryStockBySkuId(oderInfo.getSkuId())) {
