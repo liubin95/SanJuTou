@@ -1,12 +1,8 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.CheckLogin;
-import com.sanjutou.shopping.config.ValidatedException;
-import com.sanjutou.shopping.entity.AddressInfo;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.service.AddressInfoService;
-import com.sanjutou.shopping.util.JwtUtil;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.sanjutou.shopping.config.CheckLogin;
+import com.sanjutou.shopping.config.ValidatedException;
+import com.sanjutou.shopping.entity.AddressInfo;
+import com.sanjutou.shopping.service.AddressInfoService;
+import com.sanjutou.shopping.util.JwtUtil;
 
 /**
  * <p>
@@ -48,11 +48,9 @@ public class AddressInfoController {
      */
     @GetMapping("queryAddressByCustomId")
     @CheckLogin
-    public Result<List<AddressInfo>> queryAddressByCustomId(@RequestHeader String token) {
-        final Result<List<AddressInfo>> result = new Result<>();
+    public List<AddressInfo> queryAddressByCustomId(@RequestHeader String token) {
         final Integer customId = JwtUtil.getCustomerIdFromToken(token);
-        result.setObj(addressInfoService.queryAddressByCustomId(customId));
-        return result;
+        return addressInfoService.queryAddressByCustomId(customId);
     }
 
     /**
@@ -66,20 +64,17 @@ public class AddressInfoController {
      */
     @PostMapping("addAddress")
     @CheckLogin
-    public Result<String> addAddress(@RequestHeader String token, @Validated(AddressInfo.Insert.class) AddressInfo addressInfo, BindingResult bindingResult) throws ValidatedException {
-        final Result<String> result = new Result<>();
+    public String addAddress(@RequestHeader String token, @Validated(AddressInfo.Insert.class) AddressInfo addressInfo, BindingResult bindingResult) throws ValidatedException {
         final Integer customId = JwtUtil.getCustomerIdFromToken(token);
         addressInfo.setCustomerId(customId);
         addressInfoService.save(addressInfo);
         if (addressInfo.getIsDefault() == 1) {
             // 自动返回id
             addressInfoService.updateDefaultAddress(customId, addressInfo.getId());
-            result.setObj("默认地址更新完成");
+            return "默认地址更新完成";
         } else {
-            result.setObj("地址新增成功");
+            return "地址新增成功";
         }
-        return result;
-
     }
 }
 

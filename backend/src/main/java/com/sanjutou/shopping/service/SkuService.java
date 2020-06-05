@@ -1,11 +1,11 @@
 package com.sanjutou.shopping.service;
 
+import java.util.List;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sanjutou.shopping.entity.FlashSale;
 import com.sanjutou.shopping.entity.Sku;
 import com.sanjutou.shopping.entity.vo.QuerySkuVO;
-
-import java.util.List;
 
 /**
  * <p>
@@ -30,6 +30,7 @@ public interface SkuService extends IService<Sku> {
      *
      * @param skuId skuId
      * @return id无效返回null
+     * @throws InterruptedException 获取锁相关异常
      */
     Integer queryStockBySkuId(Integer skuId) throws InterruptedException;
 

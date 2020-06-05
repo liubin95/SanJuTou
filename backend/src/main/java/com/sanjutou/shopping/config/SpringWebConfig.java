@@ -1,19 +1,15 @@
 package com.sanjutou.shopping.config;
 
-import com.google.gson.GsonBuilder;
-import com.sanjutou.shopping.interceptor.OptionsInterceptor;
-import com.sanjutou.shopping.interceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
+import com.sanjutou.shopping.interceptor.OptionsInterceptor;
+import com.sanjutou.shopping.interceptor.TokenInterceptor;
 
 /**
  * 跨域配置类。
@@ -61,20 +57,6 @@ public class SpringWebConfig implements WebMvcConfigurer {
         // 对所有的URL配置
         registry.addInterceptor(optionsInterceptor).addPathPatterns("/**");
         registry.addInterceptor(tokenInterceptor).addPathPatterns("/**").excludePathPatterns("/image/**");
-    }
-
-    /**
-     * Gson 解析json 時間轉換
-     *
-     * @param converters converters
-     */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        final GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
-        gsonHttpMessageConverter.setGson(new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .create());
-        converters.add(gsonHttpMessageConverter);
     }
 
     /**

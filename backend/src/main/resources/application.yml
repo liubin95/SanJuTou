@@ -6,6 +6,8 @@ spring:
   application:
     name: shopping
     #实现WebMvcConfigurer后 配置文件内容会失效
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
   cache:
     type: redis
     redis:

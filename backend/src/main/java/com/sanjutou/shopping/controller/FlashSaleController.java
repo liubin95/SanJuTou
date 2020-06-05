@@ -1,6 +1,21 @@
 package com.sanjutou.shopping.controller;
 
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.sanjutou.shopping.config.CheckLogin;
 import com.sanjutou.shopping.config.PassToken;
@@ -15,20 +30,6 @@ import com.sanjutou.shopping.service.SkuService;
 import com.sanjutou.shopping.service.SpuService;
 import com.sanjutou.shopping.util.JwtUtil;
 import com.sanjutou.shopping.util.SkuStockUtil;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 /**
  * <p>
@@ -96,15 +97,13 @@ public class FlashSaleController {
      */
     @GetMapping("queryFlashSale")
     @PassToken
-    public Result<FlashSaleVO> queryFlashSale() {
-        final Result<FlashSaleVO> result = new Result<>();
+    public FlashSaleVO queryFlashSale() {
         final FlashSaleVO vo = new FlashSaleVO();
         final FlashSale flashSale = flashSaleService.queryFlashSale();
         // localDateTime 转化为Date
         vo.setStartTime(Date.from(flashSale.getStartTime().atZone(ZoneId.systemDefault()).toInstant()));
         vo.setSpuList(spuService.querySpuListByFlashSale(flashSale));
-        result.setObj(vo);
-        return result;
+        return vo;
     }
 
     /**
@@ -127,8 +126,8 @@ public class FlashSaleController {
      */
     @PostMapping("newOder")
     @CheckLogin
-    public Result<OderInfo> newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException {
-        Result<OderInfo> result = new Result<>();
+    public Result newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException {
+        Result result = new Result();
         // 库存数量
         final int stock = skuService.preloadFlashSale(oderInfo.getSkuId());
         if (oderInfo.getCounts() > stock) {

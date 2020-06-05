@@ -1,13 +1,14 @@
 package com.sanjutou.shopping.config;
 
-import com.sanjutou.shopping.dictionary.Messages;
-import com.sanjutou.shopping.entity.result.Result;
+import javax.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
+import com.sanjutou.shopping.dictionary.Messages;
+import com.sanjutou.shopping.entity.result.Result;
 
 /**
  * 全局异常捕获。
@@ -27,8 +28,8 @@ public class GlobalExceptionHandler {
      * @return re
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public Result<Object> handleConstraintViolationException(ConstraintViolationException exception) {
-        final Result<Object> result = new Result<>();
+    public Result handleConstraintViolationException(ConstraintViolationException exception) {
+        final Result result = new Result();
         LOGGER.error("参数校验失败：{}", exception);
         result.setCodeMsg(Messages.E0002);
         return result;
@@ -41,8 +42,8 @@ public class GlobalExceptionHandler {
      * @return re
      */
     @ExceptionHandler(ValidatedException.class)
-    public Result<Object> handleValidatedException(ValidatedException exception) {
-        final Result<Object> result = new Result<>();
+    public Result handleValidatedException(ValidatedException exception) {
+        final Result result = new Result();
         LOGGER.error("参数校验失败：{}", exception);
         result.setCodeMsg(Messages.E0002);
         return result;
@@ -55,8 +56,8 @@ public class GlobalExceptionHandler {
      * @return re
      */
     @ExceptionHandler(Exception.class)
-    public Result<Object> handleException(Exception exception) {
-        final Result<Object> result = new Result<>();
+    public Result handleException(Exception exception) {
+        final Result result = new Result();
         LOGGER.error("ApiException 异常抛出：{}", exception);
         result.setCodeMsg(Messages.E0001);
         return result;

@@ -1,5 +1,18 @@
 package com.sanjutou.shopping.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,18 +23,6 @@ import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.entity.vo.CustomerVO;
 import com.sanjutou.shopping.mapper.CustomerMapper;
 import com.sanjutou.shopping.service.CustomerService;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -57,8 +58,8 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
     @Override
     @Transactional(readOnly = true)
-    public Result<CustomerVO> customerLogin(Customer loginCustomer) {
-        final Result<CustomerVO> result = new Result<>();
+    public Result customerLogin(Customer loginCustomer) {
+        final Result result = new Result();
         // 根据登陆名查询用户
         final QueryWrapper<Customer> wrapper = new QueryWrapper<>();
         wrapper.eq("login_name", loginCustomer.getLoginName());

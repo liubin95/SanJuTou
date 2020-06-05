@@ -1,11 +1,11 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.entity.Spu;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.SpuVO;
-import com.sanjutou.shopping.service.SpuService;
+import java.util.List;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.Spu;
+import com.sanjutou.shopping.entity.vo.SpuVO;
+import com.sanjutou.shopping.service.SpuService;
 
 /**
  * <p>
@@ -49,10 +50,8 @@ public class SpuController {
      */
     @PostMapping("querySpuBySpecOptions")
     @PassToken
-    public Result<List<SpuVO>> querySpuBySpecOptions(@NotEmpty @RequestBody Integer[][] ids) {
-        final Result<List<SpuVO>> result = new Result<>();
-        result.setObj(spuService.querySpuBySpecOptions(ids));
-        return result;
+    public List<SpuVO> querySpuBySpecOptions(@NotEmpty @RequestBody Integer[][] ids) {
+        return spuService.querySpuBySpecOptions(ids);
     }
 
     /**
@@ -63,10 +62,8 @@ public class SpuController {
      */
     @GetMapping("querySpuByCategoryId")
     @PassToken
-    public Result<List<SpuVO>> querySpuByCategoryId(@NotNull Integer categoryId) {
-        final Result<List<SpuVO>> result = new Result<>();
-        result.setObj(spuService.querySpuByCategoryId(categoryId));
-        return result;
+    public List<SpuVO> querySpuByCategoryId(@NotNull Integer categoryId) {
+        return spuService.querySpuByCategoryId(categoryId);
     }
 
     /**
@@ -77,11 +74,8 @@ public class SpuController {
      */
     @GetMapping("querySpuById")
     @PassToken
-    public Result<Spu> querySpuById(@NotNull Integer spuId) {
-        final Result<Spu> result = new Result<>();
-        final Spu spu = spuService.getById(spuId);
-        result.setObj(spu);
-        return result;
+    public Spu querySpuById(@NotNull Integer spuId) {
+        return spuService.getById(spuId);
     }
 
     /**
@@ -92,10 +86,8 @@ public class SpuController {
      */
     @GetMapping("querySpuBySku")
     @PassToken
-    public Result<Spu> querySpuBySku(@NotNull Integer skuId) {
-        final Result<Spu> result = new Result<>();
-        result.setObj(spuService.querySpuBySku(skuId));
-        return result;
+    public Spu querySpuBySku(@NotNull Integer skuId) {
+        return spuService.querySpuBySku(skuId);
     }
 }
 

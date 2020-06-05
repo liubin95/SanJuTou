@@ -3,7 +3,6 @@ package com.sanjutou.shopping.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sanjutou.shopping.entity.Customer;
 import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.CustomerVO;
 
 /**
  * <p>
@@ -21,7 +20,7 @@ public interface CustomerService extends IService<Customer> {
      * @param customer 登陆用户
      * @return 成功返回token
      */
-    Result<CustomerVO> customerLogin(Customer customer);
+    Result customerLogin(Customer customer);
 
     /**
      * 检查邮箱是否已经注册。

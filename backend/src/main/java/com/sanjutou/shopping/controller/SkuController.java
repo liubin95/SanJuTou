@@ -1,11 +1,11 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.entity.Sku;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.QuerySkuVO;
-import com.sanjutou.shopping.service.SkuService;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.Sku;
+import com.sanjutou.shopping.entity.vo.QuerySkuVO;
+import com.sanjutou.shopping.service.SkuService;
 
 /**
  * <p>
@@ -49,10 +50,8 @@ public class SkuController {
      */
     @PostMapping("querySkuByPropertyOptions")
     @PassToken
-    public Result<Sku> querySkuByPropertyOptions(@RequestBody @Valid List<QuerySkuVO> list) {
-        final Result<Sku> result = new Result<>();
-        result.setObj(skuService.querySkuByPropertyOptions(list));
-        return result;
+    public Sku querySkuByPropertyOptions(@RequestBody @Valid List<QuerySkuVO> list) {
+        return skuService.querySkuByPropertyOptions(list);
     }
 
     /**
@@ -63,10 +62,8 @@ public class SkuController {
      */
     @GetMapping("querySkuById")
     @PassToken
-    public Result<Sku> querySkuById(@NotNull Integer id) {
-        final Result<Sku> result = new Result<>();
-        result.setObj(skuService.getById(id));
-        return result;
+    public Sku querySkuById(@NotNull Integer id) {
+        return skuService.getById(id);
     }
 }
 

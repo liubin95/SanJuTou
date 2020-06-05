@@ -1,5 +1,12 @@
 package com.sanjutou.shopping.service.impl;
 
+import java.math.BigDecimal;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sanjutou.shopping.dictionary.Messages;
 import com.sanjutou.shopping.entity.OderInfo;
@@ -8,12 +15,6 @@ import com.sanjutou.shopping.entity.result.Result;
 import com.sanjutou.shopping.mapper.OderInfoMapper;
 import com.sanjutou.shopping.mapper.SkuMapper;
 import com.sanjutou.shopping.service.OderInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 /**
  * <p>
@@ -41,16 +42,16 @@ public class OderInfoServiceImpl extends ServiceImpl<OderInfoMapper, OderInfo> i
     }
 
     /**
-     * beforeInvocation 方法执行之前删除库存的缓存
+     * beforeInvocation 方法执行之后删除库存的缓存
      *
      * @param oderInfo 订单信息
      * @return 结果
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(cacheNames = "sku", key = "#oderInfo.skuId", beforeInvocation = true)
-    public Result<OderInfo> newOder(OderInfo oderInfo) {
-        final Result<OderInfo> result = new Result<>();
+    @CacheEvict(cacheNames = "sku", key = "#oderInfo.skuId")
+    public Result newOder(OderInfo oderInfo) {
+        final Result result = new Result();
         //扣库存
         final Sku sku = skuMapper.querySkuById(oderInfo.getSkuId());
         if (sku.getStock() < oderInfo.getCounts()) {

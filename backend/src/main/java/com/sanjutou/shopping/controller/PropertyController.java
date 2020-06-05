@@ -1,17 +1,18 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.PropertyVO;
-import com.sanjutou.shopping.service.PropertyService;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.vo.PropertyVO;
+import com.sanjutou.shopping.service.PropertyService;
 
 /**
  * <p>
@@ -43,10 +44,8 @@ public class PropertyController {
      */
     @GetMapping("queryPropertyBySpu")
     @PassToken
-    public Result<List<PropertyVO>> queryPropertyBySpu(@NotNull Integer spuId) {
-        final Result<List<PropertyVO>> result = new Result<>();
-        result.setObj(propertyService.queryPropertyBySpu(spuId));
-        return result;
+    public List<PropertyVO> queryPropertyBySpu(@NotNull Integer spuId) {
+        return propertyService.queryPropertyBySpu(spuId);
     }
 
     /**
@@ -57,10 +56,8 @@ public class PropertyController {
      */
     @GetMapping("queryPropertyBySku")
     @PassToken
-    public Result<List<PropertyVO>> queryPropertyBySku(@NotNull Integer skuId) {
-        final Result<List<PropertyVO>> result = new Result<>();
-        result.setObj(propertyService.queryPropertyBySku(skuId));
-        return result;
+    public List<PropertyVO> queryPropertyBySku(@NotNull Integer skuId) {
+        return propertyService.queryPropertyBySku(skuId);
     }
 }
 

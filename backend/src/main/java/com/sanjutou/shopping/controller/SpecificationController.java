@@ -1,17 +1,18 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.SpecificationVO;
-import com.sanjutou.shopping.service.SpecificationService;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.vo.SpecificationVO;
+import com.sanjutou.shopping.service.SpecificationService;
 
 /**
  * <p>
@@ -44,10 +45,8 @@ public class SpecificationController {
      */
     @GetMapping("queryCategorySpec")
     @PassToken
-    public Result<List<SpecificationVO>> queryCategorySpec(@NotNull Integer categoryId) {
-        Result<List<SpecificationVO>> result = new Result<>();
-        result.setObj(specificationService.queryCategorySpec(categoryId));
-        return result;
+    public List<SpecificationVO> queryCategorySpec(@NotNull Integer categoryId) {
+        return specificationService.queryCategorySpec(categoryId);
     }
 }
 

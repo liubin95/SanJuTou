@@ -1,7 +1,7 @@
 package com.sanjutou.shopping.service;
 
-import com.sanjutou.shopping.entity.OderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sanjutou.shopping.entity.OderInfo;
 import com.sanjutou.shopping.entity.result.Result;
 
 /**
@@ -20,7 +20,7 @@ public interface OderInfoService extends IService<OderInfo> {
      * @param oderInfo 订单信息
      * @return 订单对象
      */
-    Result<OderInfo> newOder(OderInfo oderInfo);
+    Result newOder(OderInfo oderInfo);
 
 
     /**

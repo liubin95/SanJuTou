@@ -1,13 +1,8 @@
 package com.sanjutou.shopping.controller;
 
-import com.sanjutou.shopping.config.CheckLogin;
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.config.ValidatedException;
-import com.sanjutou.shopping.dictionary.Messages;
-import com.sanjutou.shopping.entity.Customer;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.entity.vo.CustomerVO;
-import com.sanjutou.shopping.service.CustomerService;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -18,8 +13,16 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import com.sanjutou.shopping.config.CheckLogin;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.config.ValidatedException;
+import com.sanjutou.shopping.dictionary.Messages;
+import com.sanjutou.shopping.entity.Customer;
+import com.sanjutou.shopping.entity.Spu;
+import com.sanjutou.shopping.entity.result.Result;
+import com.sanjutou.shopping.service.CollectionInfoService;
+import com.sanjutou.shopping.service.CustomerService;
+import com.sanjutou.shopping.util.JwtUtil;
 
 /**
  * <p>
@@ -39,9 +42,15 @@ public class CustomerController {
      */
     private final CustomerService customerService;
 
+    /**
+     * 收藏相关服务
+     */
+    private final CollectionInfoService collectionInfoService;
+
     @Autowired
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, CollectionInfoService collectionInfoService) {
         this.customerService = customerService;
+        this.collectionInfoService = collectionInfoService;
     }
 
 
@@ -55,7 +64,7 @@ public class CustomerController {
      */
     @PostMapping("login")
     @PassToken
-    public Result<CustomerVO> login(@Validated(Customer.Login.class) Customer customer, BindingResult bindingResult) throws ValidatedException {
+    public Result login(@Validated(Customer.Login.class) Customer customer, BindingResult bindingResult) throws ValidatedException {
         return customerService.customerLogin(customer);
     }
 
@@ -69,8 +78,8 @@ public class CustomerController {
      */
     @PostMapping("reg")
     @PassToken
-    public Result<CustomerVO> reg(@Validated(Customer.Reg.class) Customer customer, BindingResult bindingResult) throws ValidatedException {
-        Result<CustomerVO> result = new Result<>();
+    public Result reg(@Validated(Customer.Reg.class) Customer customer, BindingResult bindingResult) throws ValidatedException {
+        Result result = new Result();
         // 判断是否可以注册
         if (customerService.checkEmail(customer.getLoginName())) {
             // 加密密码
@@ -95,7 +104,20 @@ public class CustomerController {
      */
     @GetMapping("checkLogin")
     @CheckLogin
-    public Result<String> checkLogin(@RequestHeader @NotBlank String token) {
-        return new Result<>();
+    public String checkLogin(@RequestHeader String token) {
+        return "";
+    }
+
+
+    /**
+     * 获取用户的全部收藏
+     *
+     * @param token token
+     * @return 集合
+     */
+    @GetMapping("queryCollection")
+    @CheckLogin
+    public List<Spu> queryCollection(@RequestHeader String token) {
+        return collectionInfoService.queryCollection(JwtUtil.getCustomerIdFromToken(token));
     }
 }

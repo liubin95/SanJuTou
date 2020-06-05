@@ -1,14 +1,8 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.CheckLogin;
-import com.sanjutou.shopping.config.ValidatedException;
-import com.sanjutou.shopping.dictionary.Messages;
-import com.sanjutou.shopping.entity.OderInfo;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.service.OderInfoService;
-import com.sanjutou.shopping.service.SkuService;
-import com.sanjutou.shopping.util.JwtUtil;
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +11,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import com.sanjutou.shopping.config.CheckLogin;
+import com.sanjutou.shopping.config.ValidatedException;
+import com.sanjutou.shopping.dictionary.Messages;
+import com.sanjutou.shopping.entity.OderInfo;
+import com.sanjutou.shopping.entity.result.Result;
+import com.sanjutou.shopping.service.OderInfoService;
+import com.sanjutou.shopping.service.SkuService;
+import com.sanjutou.shopping.util.JwtUtil;
 
 /**
  * <p>
@@ -59,8 +60,8 @@ public class OderInfoController {
      */
     @PostMapping("newOder")
     @CheckLogin
-    public Result<OderInfo> newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException, InterruptedException {
-        Result<OderInfo> result = new Result<>();
+    public Result newOder(@RequestHeader String token, @Validated(OderInfo.Insert.class) OderInfo oderInfo, BindingResult bindingResult) throws ValidatedException, InterruptedException {
+        Result result = new Result();
         // 购买数量大于库存数量
         if (oderInfo.getCounts() > skuService.queryStockBySkuId(oderInfo.getSkuId())) {
             result.setCodeMsg(Messages.E0006);

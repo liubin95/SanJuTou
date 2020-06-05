@@ -1,17 +1,18 @@
 package com.sanjutou.shopping.controller;
 
 
-import com.sanjutou.shopping.config.PassToken;
-import com.sanjutou.shopping.entity.Category;
-import com.sanjutou.shopping.entity.result.Result;
-import com.sanjutou.shopping.service.CategoryService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.sanjutou.shopping.config.PassToken;
+import com.sanjutou.shopping.entity.Category;
+import com.sanjutou.shopping.service.CategoryService;
 
 /**
  * <p>
@@ -43,10 +44,14 @@ public class CategoryController {
      */
     @GetMapping("queryAllCategory")
     @PassToken
-    public Result<List<Category>> queryAllCategory() {
-        final Result<List<Category>> result = new Result<>();
-        result.setObj(categoryService.list());
-        return result;
+    public List<Category> queryAllCategory() {
+        return new ArrayList<>(categoryService.list());
+    }
+
+    @GetMapping("queryCategory")
+    @PassToken
+    public Category queryCategory() {
+        return categoryService.getById(5);
     }
 
 }

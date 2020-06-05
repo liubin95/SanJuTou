@@ -13,7 +13,7 @@ import java.util.List;
  * @author liubin
  * @since 2019-11-20
  */
-public interface AddressInfoService extends IService<AddressInfo> {
+public interface AddressInfoService extends IService<AddressInfo>{
 
     /**
      * 查询用户的所有地址信息。
