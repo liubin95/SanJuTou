@@ -15,7 +15,7 @@
   "author": "Aresn",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "v-region": "^2.2.2",
     "view-design": "^4.0.2",
     "vue": "^2.5.16",
